@@ -14,7 +14,7 @@
     });
 
     if (typeof selectedFolder === "string") {
-      goto(`/checking-repo?repo-path=${selectedFolder}`);
+      goto(`/onboarding?repo=${selectedFolder}`);
     } else if (selectedFolder === null) {
       errorMsg = "No folder selected!";
     } else {

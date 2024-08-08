@@ -4,7 +4,7 @@
   import { invoke } from "@tauri-apps/api";
   import { onMount } from "svelte";
 
-  let repoPath = $page.url.searchParams.get("repo-path"),
+  let repoPath = $page.url.searchParams.get("repo"),
     isItRepository: undefined | false = undefined;
 
   onMount(async () => {
@@ -14,7 +14,7 @@
       });
 
       if (result === true) {
-        goto(`/browse?repo-path?${repoPath}`);
+        goto(`/browse?repo?${repoPath}`);
       } else {
         isItRepository = result;
       }
