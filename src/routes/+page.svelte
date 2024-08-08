@@ -3,16 +3,16 @@
   import { invoke } from "@tauri-apps/api";
   import { onMount } from "svelte";
 
-  async function gitExist() {
-    let git_exist = await invoke<boolean>("is_git_available");
+  let gitExist: boolean = true;
 
-    if (git_exist === false) goto("/git-does-not-exist");
+  onMount(async () => {
+    let result = await invoke<boolean>("is_git_available");
+
+    if (result === false) gitExist = false;
     else goto("/home");
-  }
-
-  onMount(() => {
-    gitExist();
   });
 </script>
 
-<!-- Checking if Git is available or not. -->
+{#if gitExist === false}
+  Git is not available. :(
+{/if}
