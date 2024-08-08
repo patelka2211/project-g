@@ -7,7 +7,7 @@
     let git_exist = await invoke<boolean>("is_git_available");
 
     if (git_exist === false) goto("/git-does-not-exist");
-    else goto("/dashboard");
+    else goto("/home");
   }
 
   onMount(() => {
