@@ -1,15 +1,35 @@
-<script>
+<script lang="ts">
+  import { goto } from "$app/navigation";
   import { page } from "$app/stores";
+  import { invoke } from "@tauri-apps/api";
+  import { onMount } from "svelte";
 
-  let repo = $page.url.searchParams.get("repo-path");
+  let repoPath = $page.url.searchParams.get("repo-path"),
+    isItRepository: undefined | false = undefined;
+
+  onMount(async () => {
+    if (repoPath) {
+      const result = await invoke<boolean>("is_it_repository", {
+        path: repoPath,
+      });
+
+      if (result === true) {
+        goto(`/browse?repo-path?${repoPath}`);
+      } else {
+        isItRepository = result;
+      }
+    }
+  });
 </script>
 
-{#if repo === null}
+{#if repoPath === null}
   No repo provided!
-{:else}
-  checking repo: {repo}
+  <br />
+  <a href="/">home</a>
+{:else if isItRepository === undefined}
+  checking repo: {repoPath}
+{:else if isItRepository === false}
+  {repoPath} is not a git repo
+  <br />
+  <a href="/">home</a>
 {/if}
-
-<br />
-
-<a href="/">home</a>
