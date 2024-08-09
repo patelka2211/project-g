@@ -14,7 +14,7 @@
       });
 
       if (result === true) {
-        goto(`/browse?repo?${repoPath}`);
+        goto(`/browse?repo=${repoPath}`);
       } else {
         isItRepository = result;
       }
