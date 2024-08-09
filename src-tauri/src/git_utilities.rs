@@ -1,6 +1,8 @@
 use std::{fs, path::Path, process::Command};
 use tauri::command as tauri_command;
 
+pub mod branches;
+
 #[tauri_command]
 pub fn is_git_available() -> bool {
     let git_check = Command::new("git").arg("--version").output();
