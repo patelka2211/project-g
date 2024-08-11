@@ -1,54 +1,65 @@
+use crate::error::Result;
+use serde::Serialize;
 use std::{
     fs::read_dir,
-    io::{self, Error},
-    os::unix::{fs::MetadataExt, process::ExitStatusExt},
+    os::unix::fs::MetadataExt,
     path::Path,
     process::{self, Output},
 };
 
-// fn recursive_files(parent_path: &Path, folder_name: String) -> Result<Vec<String>, Error> {
-//     let files = list_files(parent_path.join(&folder_name).as_path())?;
+#[derive(Serialize)]
+pub struct BranchInfo {
+    pub points_at: String,
+    pub updated_at: String,
+}
 
-//     let mut files_recursive: Vec<String> = Vec::new();
-
-//     for file in files {
-//         files_recursive.push(format!("{}/{}", folder_name, file));
-//     }
-
-//     Ok(files_recursive)
-// }
-
-fn get_commit_hash_and_time(repo_path: &String, branch_name: &String) -> Result<(), Error> {
-    let result = process::Command::new("git")
+pub fn get_commit_hash_and_time(repo_path: &String, branch_name: &String) -> Result<BranchInfo> {
+    let Output {
+        status,
+        stdout,
+        stderr,
+    } = process::Command::new("git")
         .arg("log")
         .arg("-1")
+        // .arg("--format=%H$%ct")
         .arg("--format=%H$%cI")
         .arg(format!("refs/heads/{}", branch_name))
         .current_dir(repo_path)
-        .output();
+        .output()?;
 
-    // match result {
-    //     Ok(output) => {
-    //         let Output {
-    //             status,
-    //             stdout,
-    //             stderr,
-    //         } = output;
+    if status.success() == false {
+        let stderr = String::from_utf8(stderr)?;
+        return Err(stderr.into());
+    }
 
-    //         if status.success() {
-    //             let output = match String::from_utf8(stdout) {
-    //                 Ok(it) => it,
-    //                 Err(err) => return Err(err),
-    //             };
-    //         }
-    //         Ok(())
-    //     }
-    //     Err(error) => Err(error),
-    // }
-    Ok(())
+    let stdout = String::from_utf8(stdout)?;
+    let stdout = stdout.replace("\n", "");
+
+    let splitted: Vec<&str> = stdout.split('$').collect();
+
+    let points_at = (match splitted.get(0) {
+        Some(value) => value,
+        None => {
+            return Err("Cannot found branch pointer.".into());
+        }
+    })
+    .to_string();
+
+    let updated_at = (match splitted.get(1) {
+        Some(value) => value,
+        None => {
+            return Err("Cannot found last updated time.".into());
+        }
+    })
+    .to_string();
+
+    Ok(BranchInfo {
+        points_at,
+        updated_at,
+    })
 }
 
-pub fn is_valid_branch(path: &Path) -> Result<bool, Error> {
+pub fn is_valid_branch(path: &Path) -> Result<bool> {
     let file_metadata = std::fs::metadata(path)?;
 
     if file_metadata.size() == 41 {
@@ -63,7 +74,7 @@ pub struct FolderElements {
     pub files: Vec<String>,
 }
 
-pub fn get_folder_elements(folder_path: &Path) -> Result<FolderElements, Error> {
+pub fn get_folder_elements(folder_path: &Path) -> Result<FolderElements> {
     // merge list_files and list_folders functions if they are not used in this function.
     Ok(FolderElements {
         files: list_files(folder_path)?,
@@ -71,7 +82,7 @@ pub fn get_folder_elements(folder_path: &Path) -> Result<FolderElements, Error> 
     })
 }
 
-fn list_folders(folder_path: &Path) -> Result<Vec<String>, Error> {
+fn list_folders(folder_path: &Path) -> Result<Vec<String>> {
     let mut files: Vec<String> = Vec::new();
 
     for entry in read_dir(folder_path)? {
@@ -98,7 +109,7 @@ fn list_folders(folder_path: &Path) -> Result<Vec<String>, Error> {
     Ok(files)
 }
 
-fn list_files(folder_path: &Path) -> Result<Vec<String>, Error> {
+fn list_files(folder_path: &Path) -> Result<Vec<String>> {
     let mut files: Vec<String> = Vec::new();
 
     for entry in read_dir(folder_path)? {

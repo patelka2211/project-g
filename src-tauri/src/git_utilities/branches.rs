@@ -1,16 +1,20 @@
-use std::{io::Error, path::Path};
-
-use helpers::{get_folder_elements, is_valid_branch, FolderElements};
-
 mod helpers;
 
+use crate::error::Result;
+use helpers::{
+    get_commit_hash_and_time, get_folder_elements, is_valid_branch, BranchInfo, FolderElements,
+};
+use serde::Serialize;
+use std::path::Path;
+
+#[derive(Serialize, Debug)]
 struct Branch {
     name: String,
     points_at: String,
     updated_at: String,
 }
 
-fn collect_branches(root_path: &Path, parent_path: &Option<String>) -> Result<Vec<String>, Error> {
+fn collect_branches(root_path: &Path, parent_path: &Option<String>) -> Result<Vec<String>> {
     let mut branches: Vec<String> = Vec::new();
 
     let parent_path = match parent_path {
@@ -55,7 +59,29 @@ pub fn local_branches(repo_path: String) -> String {
     let null = String::from("null");
 
     match branches {
-        Ok(files) => serde_json::to_string(&files).unwrap_or(null),
+        Ok(branches) => {
+            let mut final_branches: Vec<Branch> = Vec::new();
+
+            for branch in branches {
+                match get_commit_hash_and_time(&repo_path, &branch) {
+                    Ok(branch_info) => {
+                        let BranchInfo {
+                            points_at,
+                            updated_at,
+                        } = branch_info;
+
+                        final_branches.push(Branch {
+                            name: branch,
+                            points_at: points_at,
+                            updated_at: updated_at,
+                        })
+                    }
+                    Err(_) => {}
+                };
+            }
+
+            serde_json::to_string(&final_branches).unwrap_or(null)
+        }
         Err(_) => null,
     }
 }
