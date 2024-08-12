@@ -22,8 +22,11 @@ pub fn local_branches(repo_path: String) -> core::result::Result<String, String>
 
 #[derive(Serialize)]
 struct BranchInfo {
+    #[serde(rename(serialize = "pointsAt"))]
     points_at: String,
+    #[serde(rename(serialize = "updatedAt"))]
     updated_at: String,
+    msg: String,
 }
 
 #[tauri::command]
@@ -33,20 +36,20 @@ pub fn get_branch_info(
 ) -> core::result::Result<String, String> {
     let output = match run_git_command(
         &repo_path,
-        &format!("log -1 --format=%H$%cI refs/heads/{}", branch_name),
+        &format!("log -1 --format=%H$:$%cI$:$%B refs/heads/{}", branch_name),
     ) {
-        Ok(output) => output.replace("\n", ""),
+        Ok(output) => output,
         Err(error_msg) => {
             return Err(error_msg.to_string().into());
         }
     };
 
-    let output: Vec<&str> = output.split('$').collect();
+    let output: Vec<&str> = output.split("$:$").collect();
 
     let points_at = (match output.get(0) {
         Some(value) => value,
         None => {
-            return Err("Cannot found branch pointer.".into());
+            return Err("Error reading branch commit hash.".into());
         }
     })
     .to_string();
@@ -54,7 +57,15 @@ pub fn get_branch_info(
     let updated_at = (match output.get(1) {
         Some(value) => value,
         None => {
-            return Err("Cannot found last updated time.".into());
+            return Err("Error reading commit time.".into());
+        }
+    })
+    .to_string();
+
+    let msg = (match output.get(2) {
+        Some(value) => value,
+        None => {
+            return Err("Error reading commit message.".into());
         }
     })
     .to_string();
@@ -62,6 +73,7 @@ pub fn get_branch_info(
     let output = match serde_json::to_string(&BranchInfo {
         points_at,
         updated_at,
+        msg,
     }) {
         Ok(output) => output,
         Err(error) => {
