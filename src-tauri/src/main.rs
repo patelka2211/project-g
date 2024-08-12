@@ -7,7 +7,7 @@ mod git_utilities;
 mod shell;
 
 use crate::git_utilities::{
-    branches::{get_branch_info, local_branches},
+    branches::{current_branch, get_branch_info, local_branches},
     is_git_available, is_it_repository,
 };
 
@@ -17,7 +17,8 @@ fn main() {
             is_git_available,
             is_it_repository,
             local_branches,
-            get_branch_info
+            get_branch_info,
+            current_branch
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

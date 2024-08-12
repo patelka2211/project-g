@@ -39,34 +39,26 @@ pub fn get_branch_info(
         &format!("log -1 --format=%H$:$%cI$:$%B refs/heads/{}", branch_name),
     ) {
         Ok(output) => output,
-        Err(error_msg) => {
-            return Err(error_msg.to_string().into());
-        }
+        Err(error_msg) => return Err(error_msg.to_string().into()),
     };
 
     let output: Vec<&str> = output.split("$:$").collect();
 
     let points_at = (match output.get(0) {
         Some(value) => value,
-        None => {
-            return Err("Error reading branch commit hash.".into());
-        }
+        None => return Err("Error reading branch commit hash.".into()),
     })
     .to_string();
 
     let updated_at = (match output.get(1) {
         Some(value) => value,
-        None => {
-            return Err("Error reading commit time.".into());
-        }
+        None => return Err("Error reading commit time.".into()),
     })
     .to_string();
 
     let msg = (match output.get(2) {
         Some(value) => value,
-        None => {
-            return Err("Error reading commit message.".into());
-        }
+        None => return Err("Error reading commit message.".into()),
     })
     .to_string();
 
@@ -76,10 +68,22 @@ pub fn get_branch_info(
         msg,
     }) {
         Ok(output) => output,
-        Err(error) => {
-            return Err(error.to_string());
-        }
+        Err(error) => return Err(error.to_string()),
     };
+
+    Ok(output)
+}
+
+#[tauri::command]
+pub fn current_branch(repo_path: String) -> core::result::Result<String, String> {
+    let output = match run_git_command(&repo_path, &"branch --show-current".to_string()) {
+        Ok(output) => output,
+        Err(error) => return Err(error.to_string()),
+    };
+
+    if output == "" {
+        return Err("Current branch not found. Probably the HEAD is detached.".into());
+    }
 
     Ok(output)
 }
