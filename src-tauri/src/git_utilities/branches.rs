@@ -76,14 +76,30 @@ pub fn get_branch_info(
 
 #[tauri::command]
 pub fn current_branch(repo_path: String) -> core::result::Result<String, String> {
-    let output = match run_git_command(&repo_path, &"branch --show-current".to_string()) {
-        Ok(output) => output,
+    let repo = match git2::Repository::open(repo_path) {
+        Ok(repo) => repo,
         Err(error) => return Err(error.to_string()),
     };
 
-    if output == "" {
-        return Err("Current branch not found. Probably the HEAD is detached.".into());
-    }
+    let head = match repo.head() {
+        Ok(head) => head,
+        Err(error) => return Err(error.to_string()),
+    };
 
-    Ok(output)
+    let name = head.name();
+
+    match name {
+        Some(name) => {
+            let name = name.to_string();
+
+            if name == String::from("HEAD") {
+                return Err(String::from("Branch is detached."));
+            }
+
+            let name = name.replace("refs/heads/", "");
+
+            Ok(name)
+        }
+        None => return Err(String::from("Can not read branch name.")),
+    }
 }
