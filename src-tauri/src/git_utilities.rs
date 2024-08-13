@@ -4,30 +4,19 @@ use tauri::command as tauri_command;
 pub mod branches;
 
 #[tauri_command]
-pub fn is_git_available() -> bool {
-    let git_check = Command::new("git").arg("--version").output();
-
-    match git_check {
-        Ok(_) => true,
-        Err(_) => false,
+pub fn is_git_available() -> core::result::Result<bool, String> {
+    match Command::new("git").arg("--version").output() {
+        Ok(output) => Ok(output.status.success()),
+        Err(error) => return Err(error.to_string()),
     }
 }
 
 #[tauri_command]
-pub fn is_it_repository(path: &str) -> bool {
-    let path = Path::new(path).join(".git");
+pub fn is_it_repository(path: String) -> core::result::Result<bool, String> {
+    let path = Path::new(&path).join(".git");
 
     match fs::metadata(path) {
-        Ok(metadata) => {
-            if metadata.is_dir() {
-                // The ".git" folder exists in the given path.
-                true
-            } else {
-                // The path exists but ".git" is not a folder.
-                false
-            }
-        }
-        // The ".git" folder or the given path does not exist.
-        Err(_) => false,
+        Ok(metadata) => Ok(metadata.is_dir()),
+        Err(error) => Err(error.to_string()),
     }
 }

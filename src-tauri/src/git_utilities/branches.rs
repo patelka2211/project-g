@@ -100,6 +100,6 @@ pub fn current_branch(repo_path: String) -> core::result::Result<String, String>
 
             Ok(name)
         }
-        None => return Err(String::from("Can not read branch name.")),
+        None => Err(String::from("Cannot read branch name.")),
     }
 }
