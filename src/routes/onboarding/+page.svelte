@@ -10,7 +10,7 @@
   onMount(async () => {
     if (repoPath) {
       const result = await invoke<boolean>("is_it_repository", {
-        path: repoPath,
+        repoPath,
       });
 
       if (result === true) {

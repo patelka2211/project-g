@@ -13,7 +13,7 @@
 
     function refreshBranches() {
         if (typeof repoPath === "string") {
-            invoke<Array<Branch> | null>("local_branches", {
+            invoke<Array<Branch> | null>("list_local_branches", {
                 repoPath,
             }).then((value) => {
                 // console.log(value);

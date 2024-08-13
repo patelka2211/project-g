@@ -1,23 +1,69 @@
-mod helpers;
-
 use crate::shell::git::run_git_command;
-use helpers::collect_branches;
+use git2::{BranchType, Repository};
 use serde::Serialize;
-use std::path::Path;
+
+#[derive(Serialize)]
+struct Branch {
+    name: String,
+    upstream: Option<String>,
+    #[serde(rename(serialize = "isHead"))]
+    is_head: bool,
+}
 
 #[tauri::command]
-pub fn local_branches(repo_path: String) -> core::result::Result<String, String> {
-    let heads = format!("{}/.git/refs/heads", repo_path);
-    let heads = Path::new(&heads);
-    let branches = collect_branches(&heads, &None);
+pub fn list_local_branches(repo_path: String) -> core::result::Result<String, String> {
+    let mut output: Vec<Branch> = Vec::new();
 
-    match branches {
-        Ok(branches) => match serde_json::to_string(&branches) {
-            Ok(branches) => Ok(branches),
-            Err(_) => Err("Error while stringifying branches.".into()),
-        },
-        Err(_) => Err("Error while collecting branches.".into()),
+    let repo = match Repository::open(repo_path) {
+        Ok(repo) => repo,
+        Err(error) => return Err(error.to_string()),
+    };
+
+    let branches = match repo.branches(Some(BranchType::Local)) {
+        Ok(repo) => repo,
+        Err(error) => return Err(error.to_string()),
+    };
+
+    for branch in branches {
+        let branch = match branch {
+            Ok(branch) => branch.0,
+            Err(error) => return Err(error.to_string()),
+        };
+
+        let name = match branch.name() {
+            Ok(name) => match name {
+                Some(name) => name.to_string(),
+                None => continue,
+            },
+            Err(_) => continue,
+        };
+
+        let upstream = match branch.upstream() {
+            Ok(upstream_branch) => match upstream_branch.name() {
+                Ok(name) => match name {
+                    Some(name) => Some(name.to_string()),
+                    None => continue,
+                },
+                Err(_) => None,
+            },
+            Err(_) => None,
+        };
+
+        let is_head = branch.is_head();
+
+        output.push(Branch {
+            name,
+            upstream,
+            is_head,
+        });
     }
+
+    let output = match serde_json::to_string(&output) {
+        Ok(output) => output,
+        Err(error) => return Err(error.to_string()),
+    };
+
+    Ok(output)
 }
 
 #[derive(Serialize)]
@@ -76,7 +122,7 @@ pub fn get_branch_info(
 
 #[tauri::command]
 pub fn current_branch(repo_path: String) -> core::result::Result<String, String> {
-    let repo = match git2::Repository::open(repo_path) {
+    let repo = match Repository::open(repo_path) {
         Ok(repo) => repo,
         Err(error) => return Err(error.to_string()),
     };
