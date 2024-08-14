@@ -1,23 +1,13 @@
-pub mod branches;
-
 use git2::Repository;
 use serde::Serialize;
-use std::{fs, path::Path, process::Command};
-use tauri::command as tauri_command;
+use std::{fs::metadata, path::Path};
 
-#[tauri_command]
-pub fn is_git_available() -> core::result::Result<bool, String> {
-    match Command::new("git").arg("--version").output() {
-        Ok(output) => Ok(output.status.success()),
-        Err(error) => return Err(error.to_string()),
-    }
-}
-
-#[tauri_command]
+#[tauri::command]
+/// returns `true` if give path is git repository, `false` otherwise.
 pub fn is_it_repository(repo_path: String) -> core::result::Result<bool, String> {
     let repo_path = Path::new(&repo_path).join(".git");
 
-    match fs::metadata(repo_path) {
+    match metadata(repo_path) {
         Ok(metadata) => Ok(metadata.is_dir()),
         Err(error) => Err(error.to_string()),
     }
@@ -29,16 +19,16 @@ struct RemoteOrigin {
     push: Option<String>,
 }
 
+#[tauri::command]
 /// Checks if the repository has origin remote.
-/// ```js
+/// ```ts
 /// // returns
 /// {
 ///     fetch: string | undefined,
 ///     push: string | undefined,
 /// }
 /// ```
-#[tauri_command]
-pub fn does_repo_have_remote_origin(repo_path: String) -> core::result::Result<String, String> {
+pub fn does_repo_has_remote_origin(repo_path: String) -> core::result::Result<String, String> {
     let repo = match Repository::open(repo_path) {
         Ok(repo) => repo,
         Err(error) => return Err(error.to_string()),

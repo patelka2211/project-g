@@ -1,35 +1,49 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
-  import { invoke } from "@tauri-apps/api";
+  import { doesRepoHasRemoteOrigin, isItRepository } from "$lib/onboarding";
   import { onMount } from "svelte";
 
-  let repoPath = $page.url.searchParams.get("repo"),
-    isItRepository: undefined | false = undefined;
-
   onMount(async () => {
-    if (repoPath) {
-      const result = await invoke<boolean>("is_it_repository", {
-        repoPath,
-      });
+    const repoPath = $page.url.searchParams.get("repo");
 
-      if (result === true) {
-        goto(`/browse?repo=${repoPath}`);
+    if (repoPath) {
+      const isRepository = await isItRepository(repoPath);
+
+      if (isRepository === true) {
+        const remote = await doesRepoHasRemoteOrigin(repoPath);
+
+        if (remote === undefined) {
+          // cannot find out remote origin
+          console.log("cannot find out remote origin");
+        } else {
+          const { fetch, push } = remote;
+
+          if (fetch === undefined && push !== undefined) {
+            // only push url available
+            console.log("only push url available");
+          } else if (fetch !== undefined && push === undefined) {
+            // only fetch url available
+            console.log("only fetch url available");
+          } else if (fetch === undefined && push === undefined) {
+            // remote available but not origin
+            console.log("remote available but not origin");
+          } else {
+            goto(`/browse?repo=${repoPath}`);
+          }
+        }
       } else {
-        isItRepository = result;
+        // not a repo
+        console.log("not a repo");
+        return;
       }
+    } else {
+      // cannot find repo
+      console.log("cannot find repo");
     }
   });
 </script>
 
-{#if repoPath === null}
-  No repo provided!
-  <br />
-  <a href="/">home</a>
-{:else if isItRepository === undefined}
-  checking repo: {repoPath}
-{:else if isItRepository === false}
-  {repoPath} is not a git repo
-  <br />
-  <a href="/">home</a>
-{/if}
+onboarding
+<br />
+<a href="/">home</a>

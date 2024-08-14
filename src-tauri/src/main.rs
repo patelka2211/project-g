@@ -1,14 +1,14 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-mod error;
-mod git_utilities;
-mod shell;
+// mod error;
+mod browse;
+mod initialization;
+mod onboarding;
 
-use crate::git_utilities::{
-    branches::{current_branch, get_branch_info, list_local_branches},
-    does_repo_have_remote_origin, is_git_available, is_it_repository,
-};
+use crate::browse::local_branches;
+use crate::initialization::is_git_available;
+use crate::onboarding::{does_repo_has_remote_origin, is_it_repository};
 
 fn main() {
     tauri::Builder::default()
@@ -17,11 +17,9 @@ fn main() {
             is_git_available,
             // Onboarding
             is_it_repository,
-            does_repo_have_remote_origin,
+            does_repo_has_remote_origin,
             // Browse
-            list_local_branches,
-            get_branch_info,
-            current_branch
+            local_branches
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

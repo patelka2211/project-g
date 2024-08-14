@@ -1,45 +1,26 @@
 <script lang="ts">
-    import { page } from "$app/stores";
-    import { invoke } from "@tauri-apps/api/tauri";
+  import { page } from "$app/stores";
+  import { getLocalBranches } from "$lib/browse";
+  import { onMount } from "svelte";
 
-    let repoPath = $page.url.searchParams.get("repo");
+  let repoPath: string | null = null;
 
-    interface Branch {
-        name: string;
-        points_at: string;
+  let branches: Awaited<ReturnType<typeof getLocalBranches>> = undefined;
+
+  onMount(async () => {
+    repoPath = $page.url.searchParams.get("repo");
+
+    if (repoPath !== null) {
+      let _branches = await getLocalBranches(repoPath);
+
+      branches = _branches;
+    } else {
+      console.log("no repo");
     }
-
-    let branches: Array<Branch> | null = null;
-
-    function refreshBranches() {
-        if (typeof repoPath === "string") {
-            invoke<Array<Branch> | null>("list_local_branches", {
-                repoPath,
-            }).then((value) => {
-                // console.log(value);
-                branches = value;
-            });
-        }
-    }
-
-    // $: {
-    //   refreshBranches();
-    // }
+  });
 </script>
 
-{#if repoPath === null}
-    no repo provided. :(
-{:else}
-    <!-- browsing: {repoPath} -->
-
-    {#if branches !== null}
-        {branches}
-    {:else}
-        no branches
-    {/if}
-{/if}
-
-<button on:click={refreshBranches}>refresh</button>
+{JSON.stringify(branches)}
 
 <br />
 <a href="/">home</a>

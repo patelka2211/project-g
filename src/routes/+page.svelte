@@ -1,18 +1,21 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import { invoke } from "@tauri-apps/api";
+  import { isGitAvailable } from "$lib/initialization";
   import { onMount } from "svelte";
 
-  let gitExist: boolean = true;
+  let gitExistError: undefined | string;
 
   onMount(async () => {
-    let result = await invoke<boolean>("is_git_available");
-
-    if (result === false) gitExist = false;
-    else goto("/home");
+    try {
+      let gitExist = await isGitAvailable();
+      if (gitExist === true) goto("/home");
+      else gitExistError = "Git not available.";
+    } catch (error) {
+      gitExistError = "Not able to check availablability of Git.";
+    }
   });
 </script>
 
-{#if gitExist === false}
-  Git is not available. :(
+{#if gitExistError !== undefined}
+  {gitExistError}
 {/if}
