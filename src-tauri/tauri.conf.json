@@ -18,6 +18,14 @@
       },
       "dialog": {
         "open": true
+      },
+      "window": {
+        "startDragging": true,
+        "maximize": true,
+        "minimize": true,
+        "unmaximize": true,
+        "unminimize": true,
+        "setResizable": true
       }
     },
     "bundle": {
@@ -62,10 +70,14 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "width": 960,
+        "height": 660,
+        "minWidth": 960,
+        "minHeight": 660,
         "resizable": true,
         "title": "project-g",
-        "width": 800
+        "titleBarStyle": "Overlay",
+        "hiddenTitle": true
       }
     ]
   }
