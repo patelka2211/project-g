@@ -20,7 +20,12 @@
   });
 </script>
 
-{JSON.stringify(branches)}
+{#if branches !== undefined}
+  {#each branches as branch (branch.name)}
+    {branch.name}, {branch.upstream}
+    <br />
+  {/each}
+{/if}
 
 <br />
 <a href="/">home</a>
