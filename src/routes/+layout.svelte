@@ -3,6 +3,7 @@
 </script>
 
 <div data-tauri-drag-region></div>
+
 <slot />
 
 <style>

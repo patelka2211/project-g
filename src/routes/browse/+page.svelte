@@ -2,6 +2,7 @@
   import { page } from "$app/stores";
   import { getLocalBranches } from "$lib/browse";
   import { onMount } from "svelte";
+  import NoRepoPath from "./no-repo-path.svelte";
 
   let repoPath: string | null = null;
 
@@ -20,11 +21,16 @@
   });
 </script>
 
-{#if branches !== undefined}
+{#if repoPath === null}
+  <NoRepoPath />
+{:else}
+  <!-- root -->
+  <div class="flex flex-col items-center">hi</div>
+  <!-- {:else if branches !== undefined}
   {#each branches as branch (branch.name)}
     {branch.name}, {branch.upstream}
     <br />
-  {/each}
+  {/each} -->
 {/if}
 
 <br />
