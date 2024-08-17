@@ -1,5 +1,4 @@
-use git2::Repository;
-use serde::Serialize;
+use super::utilities::get_remote_origin;
 use std::{fs::metadata, path::Path};
 
 #[tauri::command]
@@ -13,12 +12,6 @@ pub fn is_it_repository(repo_path: String) -> core::result::Result<bool, String>
     }
 }
 
-#[derive(Serialize)]
-struct RemoteOrigin {
-    fetch: Option<String>,
-    push: Option<String>,
-}
-
 #[tauri::command]
 /// Checks if the repository has origin remote.
 /// ```ts
@@ -29,29 +22,12 @@ struct RemoteOrigin {
 /// }
 /// ```
 pub fn does_repo_has_remote_origin(repo_path: String) -> core::result::Result<String, String> {
-    let repo = match Repository::open(repo_path) {
-        Ok(repo) => repo,
-        Err(error) => return Err(error.to_string()),
-    };
-
-    let must_have_remote = "origin";
-
-    let remote_origin = match repo.find_remote(&must_have_remote) {
+    let remote_origin = match get_remote_origin(repo_path) {
         Ok(origin) => origin,
         Err(error) => return Err(error.to_string()),
     };
 
-    let fetch = match remote_origin.url() {
-        Some(url) => Some(url.to_string()),
-        None => None,
-    };
-
-    let push = match remote_origin.pushurl() {
-        Some(url) => Some(url.to_string()),
-        None => None,
-    };
-
-    let output = match serde_json::to_string(&RemoteOrigin { fetch, push }) {
+    let output = match serde_json::to_string(&remote_origin) {
         Ok(output) => output,
         Err(error) => return Err(error.to_string()),
     };

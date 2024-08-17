@@ -1,8 +1,9 @@
+use crate::error::Result;
 use git2::{BranchType, Repository};
 use serde::Serialize;
 
 #[derive(Serialize)]
-struct Branch {
+pub struct Branch {
     name: String,
     upstream: Option<String>,
     #[serde(rename(serialize = "isHead"))]
@@ -11,35 +12,15 @@ struct Branch {
     commit_time: u64,
 }
 
-#[tauri::command]
-/// returns list of **LOCAL** branches with its metadata.
-///```ts
-/// // returns
-/// Array<{
-///     name: string,
-///     upstream?: string,
-///     isHead: boolean,
-///     commitTime: number
-/// }>
-/// ```
-pub fn local_branches(repo_path: String) -> core::result::Result<String, String> {
+pub fn get_local_branches(repo_path: String) -> Result<Vec<Branch>> {
     let mut output: Vec<Branch> = Vec::new();
 
-    let repo = match Repository::open(repo_path) {
-        Ok(repo) => repo,
-        Err(error) => return Err(error.to_string()),
-    };
+    let repo = Repository::open(repo_path)?;
 
-    let branches = match repo.branches(Some(BranchType::Local)) {
-        Ok(repo) => repo,
-        Err(error) => return Err(error.to_string()),
-    };
+    let branches = repo.branches(Some(BranchType::Local))?;
 
     for branch in branches {
-        let branch = match branch {
-            Ok(branch) => branch.0,
-            Err(error) => return Err(error.to_string()),
-        };
+        let branch = branch?.0;
 
         let name = match branch.name() {
             Ok(name) => match name {
@@ -77,11 +58,6 @@ pub fn local_branches(repo_path: String) -> core::result::Result<String, String>
             commit_time,
         });
     }
-
-    let output = match serde_json::to_string(&output) {
-        Ok(output) => output,
-        Err(error) => return Err(error.to_string()),
-    };
 
     Ok(output)
 }
