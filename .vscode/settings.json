@@ -2,9 +2,10 @@
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
   },
-  "files.autoSave": "off",
+  // "files.autoSave": "off",
   "workbench.editor.customLabels.enabled": true,
   "workbench.editor.customLabels.patterns": {
     "**/src-tauri/src/**/mod.rs": "${dirname} - Module"
-  }
+  },
+  "svelte.enable-ts-plugin": true
 }
