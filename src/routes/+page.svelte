@@ -3,19 +3,35 @@
   import { isGitAvailable } from "$lib/initialization";
   import { onMount } from "svelte";
 
-  let gitExistError: undefined | string;
+  let errorMsg: string | undefined;
 
   onMount(async () => {
     try {
       let gitExist = await isGitAvailable();
+
       if (gitExist === true) goto("/home");
-      else gitExistError = "Git not available.";
+      else {
+        errorMsg = "Git not available!";
+      }
     } catch (error) {
-      gitExistError = "Not able to check availablability of Git.";
+      errorMsg = "Not able to find Git!";
+      if (error instanceof Error) {
+        console.log(error.message);
+      }
     }
   });
 </script>
 
-{#if gitExistError !== undefined}
-  {gitExistError}
+{#if errorMsg !== undefined}
+  <div class="root flex flex-col items-center justify-around">
+    <span>
+      {errorMsg}
+    </span>
+  </div>
 {/if}
+
+<style>
+  .root {
+    min-height: calc(100dvh - 2 * 28px);
+  }
+</style>
