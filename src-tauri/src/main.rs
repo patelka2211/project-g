@@ -8,7 +8,7 @@ mod onboarding;
 
 use browse::handlers::local_branches;
 use initialization::handlers::is_git_available;
-use onboarding::handlers::{get_remote_origin, is_it_repository};
+use onboarding::handlers::{get_origin_head, get_remote_origin, is_it_repository};
 
 fn main() {
     tauri::Builder::default()
@@ -16,8 +16,9 @@ fn main() {
             // Initialization
             is_git_available,
             // Onboarding
-            is_it_repository,
+            get_origin_head,
             get_remote_origin,
+            is_it_repository,
             // Browse
             local_branches
         ])

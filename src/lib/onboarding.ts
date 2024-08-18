@@ -22,3 +22,9 @@ export async function getRemoteOrigin(repoPath: string) {
     console.log(error);
   }
 }
+
+export async function getOriginHead(repoPath: string) {
+  return (await invoke<string>("get_origin_head", {
+    repoPath,
+  })) as "origin/HEAD";
+}

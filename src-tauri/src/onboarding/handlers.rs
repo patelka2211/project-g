@@ -34,3 +34,19 @@ pub fn get_remote_origin(repo_path: String) -> core::result::Result<String, Stri
 
     Ok(output)
 }
+
+#[tauri::command]
+/// Checks if `origin/HEAD` is being tracked by the local repository.
+/// If it is not tracked, the function queries the remote repository to identify the default branch
+/// and sets `origin/HEAD` to track this default branch.
+///
+/// # Returns
+/// ```ts
+/// "origin/HEAD" as const
+/// ```
+pub fn get_origin_head(repo_path: String) -> core::result::Result<String, String> {
+    match utilities::get_origin_head(repo_path) {
+        Ok(origin_head) => Ok(origin_head),
+        Err(error) => Err(error.to_string()),
+    }
+}
