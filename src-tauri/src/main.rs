@@ -6,7 +6,7 @@ mod error;
 mod initialization;
 mod onboarding;
 
-use browse::handlers::local_branches;
+use browse::handlers::get_local_branches;
 use initialization::handlers::is_git_available;
 use onboarding::handlers::{get_origin_head, get_remote_origin, is_it_repository};
 
@@ -20,7 +20,7 @@ fn main() {
             get_remote_origin,
             is_it_repository,
             // Browse
-            local_branches
+            get_local_branches
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

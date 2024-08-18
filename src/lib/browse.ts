@@ -2,7 +2,7 @@ import { invoke } from "@tauri-apps/api/tauri";
 
 export async function getLocalBranches(repoPath: String) {
   try {
-    let branches = await invoke<string>("local_branches", {
+    let branches = await invoke<string>("get_local_branches", {
       repoPath,
     });
 

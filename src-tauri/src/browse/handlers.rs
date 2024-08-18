@@ -1,4 +1,4 @@
-use super::utilities::get_local_branches;
+use super::utilities;
 
 #[tauri::command]
 /// returns list of **LOCAL** branches with its metadata.
@@ -11,8 +11,8 @@ use super::utilities::get_local_branches;
 ///     commitTime: number
 /// }>
 /// ```
-pub fn local_branches(repo_path: String) -> core::result::Result<String, String> {
-    let branches = match get_local_branches(repo_path) {
+pub fn get_local_branches(repo_path: String) -> core::result::Result<String, String> {
+    let branches = match utilities::get_local_branches(repo_path) {
         Ok(branches) => branches,
         Err(error) => return Err(error.to_string()),
     };
