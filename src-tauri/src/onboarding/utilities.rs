@@ -37,7 +37,7 @@ pub fn get_remote_origin(repo_path: String) -> Result<RemoteOrigin> {
 pub fn get_origin_head(repo_path: String) -> Result<String> {
     let remote_name = "origin";
 
-    let remote_head_path = format!("{}/.git/refs/heads/remotes/{}/HEAD", repo_path, remote_name);
+    let remote_head_path = format!("{}/.git/refs/remotes/{}/HEAD", repo_path, remote_name);
     let remote_head_path = Path::new(&remote_head_path);
 
     if remote_head_path.exists() && remote_head_path.is_file() {
