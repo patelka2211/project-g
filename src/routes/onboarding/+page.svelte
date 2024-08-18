@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
-  import { doesRepoHasRemoteOrigin, isItRepository } from "$lib/onboarding";
+  import { getRemoteOrigin, isItRepository } from "$lib/onboarding";
   import { onMount } from "svelte";
 
   onMount(async () => {
@@ -11,7 +11,7 @@
       const isRepository = await isItRepository(repoPath);
 
       if (isRepository === true) {
-        const remote = await doesRepoHasRemoteOrigin(repoPath);
+        const remote = await getRemoteOrigin(repoPath);
 
         if (remote === undefined) {
           // cannot find out remote origin

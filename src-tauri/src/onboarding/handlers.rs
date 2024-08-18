@@ -1,4 +1,4 @@
-use super::utilities::get_remote_origin;
+use super::utilities;
 use std::{fs::metadata, path::Path};
 
 #[tauri::command]
@@ -21,8 +21,8 @@ pub fn is_it_repository(repo_path: String) -> core::result::Result<bool, String>
 ///     push: string | undefined,
 /// }
 /// ```
-pub fn does_repo_has_remote_origin(repo_path: String) -> core::result::Result<String, String> {
-    let remote_origin = match get_remote_origin(repo_path) {
+pub fn get_remote_origin(repo_path: String) -> core::result::Result<String, String> {
+    let remote_origin = match utilities::get_remote_origin(repo_path) {
         Ok(origin) => origin,
         Err(error) => return Err(error.to_string()),
     };

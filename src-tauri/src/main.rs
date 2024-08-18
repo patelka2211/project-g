@@ -6,9 +6,9 @@ mod error;
 mod initialization;
 mod onboarding;
 
-use crate::browse::handlers::local_branches;
-use crate::initialization::handlers::is_git_available;
-use crate::onboarding::handlers::{does_repo_has_remote_origin, is_it_repository};
+use browse::handlers::local_branches;
+use initialization::handlers::is_git_available;
+use onboarding::handlers::{get_remote_origin, is_it_repository};
 
 fn main() {
     tauri::Builder::default()
@@ -17,7 +17,7 @@ fn main() {
             is_git_available,
             // Onboarding
             is_it_repository,
-            does_repo_has_remote_origin,
+            get_remote_origin,
             // Browse
             local_branches
         ])

@@ -10,10 +10,10 @@ export async function isItRepository(repoPath: string) {
   }
 }
 
-export async function doesRepoHasRemoteOrigin(repoPath: string) {
+export async function getRemoteOrigin(repoPath: string) {
   try {
     return JSON.parse(
-      await invoke<string>("does_repo_has_remote_origin", { repoPath })
+      await invoke<string>("get_remote_origin", { repoPath })
     ) as {
       fetch?: string;
       push?: string;
