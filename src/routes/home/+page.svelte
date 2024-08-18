@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-
+  import Button from "@/components/ui/button/button.svelte";
   import { open } from "@tauri-apps/api/dialog";
   import { documentDir } from "@tauri-apps/api/path";
 
@@ -23,7 +23,7 @@
   }
 </script>
 
-<button on:click={folderSelector}>Select folder</button>
+<Button on:click={folderSelector}>Select folder</Button>
 
 {#if typeof errorMsg === "string"}
   {errorMsg}
