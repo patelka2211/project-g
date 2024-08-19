@@ -18,14 +18,24 @@
 <ModeWatcher />
 
 {#if !titlebarHidden}
-  <div data-tauri-drag-region class="border-b border-accent"></div>
+  <div data-tauri-drag-region class="draggable border-b border-separate"></div>
 {/if}
 
-<slot></slot>
+<div class={`window-content${titlebarHidden ? " fullscreen" : ""}`}>
+  <slot></slot>
+</div>
 
 <style>
-  div {
+  .draggable {
     height: 28px;
     width: 100vw;
+  }
+
+  .window-content {
+    width: 100dvw;
+    height: calc(100dvh - 28px);
+  }
+  .window-content.fullscreen {
+    height: 100dvh;
   }
 </style>
