@@ -5,7 +5,7 @@
 
 <ModeWatcher />
 
-<div data-tauri-drag-region></div>
+<div data-tauri-drag-region class="border-b border-accent"></div>
 
 <slot></slot>
 

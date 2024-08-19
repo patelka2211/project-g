@@ -1,4 +1,4 @@
-<div class="center w-screen">
+<div class="center w-screen flex flex-col items-center">
   <slot />
 </div>
 
