@@ -3,6 +3,7 @@
   import { ModeWatcher } from "mode-watcher";
   import { onMount } from "svelte";
   import "../app.css";
+  import Sonner from "@/components/ui/sonner/sonner.svelte";
 
   let titlebarHidden = false;
 
@@ -16,6 +17,8 @@
 </script>
 
 <ModeWatcher />
+
+<Sonner richColors expand />
 
 {#if !titlebarHidden}
   <div data-tauri-drag-region class="draggable border-b border-separate"></div>
