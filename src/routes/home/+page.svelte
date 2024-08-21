@@ -1,5 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
+  import { verifyRepository } from "@/repository-checks";
   import { Button } from "@/shadcn-svelte-components/ui/button";
   import { open } from "@tauri-apps/api/dialog";
   import { documentDir } from "@tauri-apps/api/path";
@@ -15,11 +16,17 @@
     });
 
     if (typeof selectedFolder === "string") {
-      goto(`/onboarding?repo=${selectedFolder}`);
+      try {
+        await verifyRepository(selectedFolder);
+        goto(`/browse?repo=${selectedFolder}`);
+      } catch (error) {
+        console.error(error);
+        toast.error((error as Error).toString());
+      }
     } else if (selectedFolder === null) {
-      errorMsg = "No folder selected!";
+      errorMsg = "No folder selected.";
     } else {
-      errorMsg = "Cannot select multiple folders!";
+      errorMsg = "Cannot select multiple folders.";
     }
   }
 
@@ -31,7 +38,7 @@
   }
 </script>
 
-<div class="root flex flex-col items-center justify-around">
+<div class="min-h-full flex flex-col items-center justify-around">
   <div class="flex flex-col items-center">
     <h1 class="font-semibold text-3xl mb-6">Welcome to Project G</h1>
     <Button on:click={folderSelector} class="mb-4">Select folder</Button>
@@ -43,8 +50,5 @@
     &:hover {
       cursor: default;
     }
-  }
-  .root {
-    min-height: calc(100dvh - 28px);
   }
 </style>

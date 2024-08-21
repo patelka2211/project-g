@@ -4,22 +4,22 @@
 mod browse;
 mod error;
 mod initialization;
-mod onboarding;
+mod repository_checks;
 
 use browse::handlers::get_local_branches;
 use initialization::handlers::is_git_available;
-use onboarding::handlers::{get_origin_head, get_remote_origin, is_it_repository};
+use repository_checks::handlers::{check_for_dot_git_folder, check_origin_head, get_remote_origin};
 
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
-            // Initialization
+            // initialization
             is_git_available,
-            // Onboarding
-            get_origin_head,
+            // repository_checks
+            check_origin_head,
             get_remote_origin,
-            is_it_repository,
-            // Browse
+            check_for_dot_git_folder,
+            // browse
             get_local_branches
         ])
         .run(tauri::generate_context!())
