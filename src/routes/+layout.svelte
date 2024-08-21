@@ -3,7 +3,7 @@
   import { ModeWatcher } from "mode-watcher";
   import { onMount } from "svelte";
   import "../app.css";
-  import Sonner from "@/components/ui/sonner/sonner.svelte";
+  import Sonner from "@/shadcn-svelte-components/ui/sonner/sonner.svelte";
 
   let titlebarHidden = false;
 

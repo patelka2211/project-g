@@ -2,9 +2,9 @@
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
   import { getLocalBranches, type Branch } from "$lib/browse";
-  import Button from "@/components/ui/button/button.svelte";
-  import Branches from "./Branches.svelte";
+  import Button from "@/shadcn-svelte-components/ui/button/button.svelte";
   import { onMount } from "svelte";
+  import Branches from "./Branches.svelte";
 
   let repoPath = $page.url.searchParams.get("repo");
   let branches: Array<Branch> = [];

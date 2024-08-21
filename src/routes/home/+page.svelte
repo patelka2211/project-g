@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import { Button } from "@/components/ui/button";
+  import { Button } from "@/shadcn-svelte-components/ui/button";
   import { open } from "@tauri-apps/api/dialog";
   import { documentDir } from "@tauri-apps/api/path";
   import { toast } from "svelte-sonner";

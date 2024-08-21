@@ -6,7 +6,7 @@
     getRemoteOrigin,
     isItRepository,
   } from "$lib/onboarding";
-  import Button from "@/components/ui/button/button.svelte";
+  import Button from "@/shadcn-svelte-components/ui/button/button.svelte";
   import { onMount } from "svelte";
 
   let errorMsg: string | undefined;
