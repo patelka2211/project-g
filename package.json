@@ -9,7 +9,8 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"tauri": "tauri",
-		"app": "tauri dev"
+		"app": "tauri dev",
+		"add-components": "npx shadcn-svelte@latest add"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",

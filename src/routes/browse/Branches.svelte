@@ -1,22 +1,23 @@
 <script lang="ts">
   import type { Branch } from "$lib/browse";
+  import Button from "@/shadcn-svelte-components/ui/button/button.svelte";
   import { onDestroy, onMount } from "svelte";
 
-  let branchesContainerElement: HTMLDivElement | null;
+  let branchesContainerElement: HTMLDivElement;
   let currentBranchElement: HTMLDivElement | null;
   let defaultBranchShadowOn: "left" | "right" | undefined = undefined;
 
   function handleScroll() {
-    if (!(branchesContainerElement && currentBranchElement)) return;
+    if (currentBranchElement === null) return;
 
     const containerRect = branchesContainerElement.getBoundingClientRect();
-    const cardRect = currentBranchElement.getBoundingClientRect();
+    const branchRect = currentBranchElement.getBoundingClientRect();
 
-    if (cardRect.left <= containerRect.left) {
+    if (branchRect.left <= containerRect.left) {
       currentBranchElement.style.left = "0px";
       currentBranchElement.style.right = "unset";
       defaultBranchShadowOn = "right";
-    } else if (cardRect.right >= containerRect.right) {
+    } else if (branchRect.right >= containerRect.right) {
       currentBranchElement.style.right = "0px";
       currentBranchElement.style.left = "unset";
       defaultBranchShadowOn = "left";
@@ -28,41 +29,44 @@
   }
 
   onMount(() => {
-    branchesContainerElement?.addEventListener("scroll", handleScroll);
-    branchesContainerElement?.addEventListener("resize", handleScroll);
+    branchesContainerElement.addEventListener("scroll", handleScroll);
+    branchesContainerElement.addEventListener("resize", handleScroll);
   });
 
   onDestroy(() => {
-    branchesContainerElement?.removeEventListener("scroll", handleScroll);
-    branchesContainerElement?.removeEventListener("resize", handleScroll);
+    branchesContainerElement.removeEventListener("scroll", handleScroll);
+    branchesContainerElement.removeEventListener("resize", handleScroll);
   });
 
   export let branches: Array<Branch>;
 </script>
 
-{#if branches.length === 0}
-  No branches
-{:else}
-  <div
-    bind:this={branchesContainerElement}
-    class="branches w-full flex flex-row overflow-x-auto"
-  >
+<div
+  bind:this={branchesContainerElement}
+  class={`branches w-full flex items-center overflow-x-auto${branches.length === 0 ? " justify-around" : ""}`}
+>
+  {#if branches.length === 0}
+    <div class=" flex flex-col items-center gap-4">
+      <span> No branches </span>
+      <Button class="rounded-full">Create a branch</Button>
+    </div>
+  {:else}
     {#each branches as branch}
       {#if branch.isHead}
         <div
           bind:this={currentBranchElement}
-          class={`branch sticky${defaultBranchShadowOn === undefined ? "" : ` shadow-${defaultBranchShadowOn}`}`}
+          class={`branch p-2 sticky${defaultBranchShadowOn === undefined ? "" : ` shadow-${defaultBranchShadowOn}`}`}
         >
           {branch.name}
         </div>
       {:else}
-        <div class="branch bg-accent">
+        <div class="branch p-2">
           {branch.name}
         </div>
       {/if}
     {/each}
-  </div>
-{/if}
+  {/if}
+</div>
 
 <style lang="scss">
   .branches {
@@ -70,17 +74,16 @@
 
     .branch {
       height: 100%;
-      @apply border min-w-96 bg-background;
+      @apply min-w-96 bg-background;
 
-      &.sticky.shadow-right {
-        box-shadow:
-          4px 0 10px hsl(var(--background) / 1),
-          8px 0 20px hsl(var(--background) / 1);
-      }
-      &.sticky.shadow-left {
-        box-shadow:
-          -4px 0 10px hsl(var(--background) / 1),
-          -8px 0 20px hsl(var(--background) / 1);
+      &.sticky {
+        transition: box-shadow 0.2s ease-in-out;
+        &.shadow-right {
+          box-shadow: 22px 0 70px 4px hsl(var(--foreground) / 0.08);
+        }
+        &.shadow-left {
+          box-shadow: -22px 0 70px 4px hsl(var(--foreground) / 0.08);
+        }
       }
     }
   }
