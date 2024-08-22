@@ -11,16 +11,11 @@ use super::utilities;
 ///     commitTime: number
 /// }>
 /// ```
-pub fn get_local_branches(repo_path: String) -> core::result::Result<String, String> {
-    let branches = match utilities::get_local_branches(repo_path) {
-        Ok(branches) => branches,
+pub fn get_local_branches(
+    repo_path: String,
+) -> core::result::Result<Vec<utilities::Branch>, String> {
+    match utilities::get_local_branches(repo_path) {
+        Ok(branches) => Ok(branches),
         Err(error) => return Err(error.to_string()),
-    };
-
-    let output = match serde_json::to_string(&branches) {
-        Ok(output) => output,
-        Err(error) => return Err(error.to_string()),
-    };
-
-    Ok(output)
+    }
 }

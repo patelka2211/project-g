@@ -8,9 +8,7 @@ export interface Branch {
 }
 
 export async function getLocalBranches(repoPath: String) {
-  let branches = await invoke<string>("get_local_branches", {
+  return await invoke<Array<Branch>>("get_local_branches", {
     repoPath,
   });
-
-  return JSON.parse(branches) as Array<Branch>;
 }

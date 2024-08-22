@@ -8,7 +8,9 @@ mod repository_checks;
 
 use browse::handlers::get_local_branches;
 use initialization::handlers::is_git_available;
-use repository_checks::handlers::{check_for_dot_git_folder, check_origin_head, get_remote_origin};
+use repository_checks::handlers::{
+    assert_dot_git_folder, assert_origin_head, get_origin_fetch_url,
+};
 
 fn main() {
     tauri::Builder::default()
@@ -16,9 +18,9 @@ fn main() {
             // initialization
             is_git_available,
             // repository_checks
-            check_origin_head,
-            get_remote_origin,
-            check_for_dot_git_folder,
+            assert_dot_git_folder,
+            assert_origin_head,
+            get_origin_fetch_url,
             // browse
             get_local_branches
         ])

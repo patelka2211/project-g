@@ -1,29 +1,16 @@
 import { invoke } from "@tauri-apps/api/tauri";
 
-export async function checkForDotGitFolder(repoPath: string) {
+async function assertDotGitFolder(repoPath: string) {
   try {
-    await invoke<void>("check_for_dot_git_folder", { repoPath });
+    await invoke<void>("assert_dot_git_folder", { repoPath });
   } catch {
     throw Error("Not a repository.");
   }
 }
 
-export async function getRemoteOrigin(repoPath: string) {
+async function assertOriginHead(repoPath: string) {
   try {
-    return JSON.parse(
-      await invoke<string>("get_remote_origin", { repoPath })
-    ) as {
-      fetch?: string;
-      push?: string;
-    };
-  } catch {
-    throw Error('Remote "origin" not found.');
-  }
-}
-
-export async function checkOriginHead(repoPath: string) {
-  try {
-    await invoke<void>("check_origin_head", {
+    await invoke<void>("assert_origin_head", {
       repoPath,
     });
   } catch {
@@ -31,14 +18,22 @@ export async function checkOriginHead(repoPath: string) {
   }
 }
 
+async function getOriginFetchUrl(repoPath: string) {
+  try {
+    return await invoke<string | null>("get_origin_fetch_url", { repoPath });
+  } catch (error) {
+    throw Error('Remote "origin" not found.');
+  }
+}
+
 export async function verifyRepository(repoPath: string) {
-  await checkForDotGitFolder(repoPath);
+  await assertDotGitFolder(repoPath);
 
-  let remoteOrigin = await getRemoteOrigin(repoPath);
+  let originFetchUrl = await getOriginFetchUrl(repoPath);
 
-  if (remoteOrigin.fetch === undefined || remoteOrigin.push === undefined) {
-    throw Error(`Remote "origin" must have "fetch" and "push" URLs.`);
+  if (originFetchUrl === null) {
+    throw Error(`Remote "origin" must have "fetch" URL.`);
   }
 
-  await checkOriginHead(repoPath);
+  await assertOriginHead(repoPath);
 }
