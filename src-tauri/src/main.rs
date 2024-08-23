@@ -5,6 +5,7 @@ mod browse;
 mod error;
 mod init;
 mod repository_checks;
+mod saved_repos;
 
 use browse::handlers::get_local_branches;
 use init::handlers::is_git_available;
