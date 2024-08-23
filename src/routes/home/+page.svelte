@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import { verifyRepository } from "@/repository-checks";
+  import { verifyRepository } from "@/integrated-backend/repository-checks";
   import { Button } from "@/shadcn-svelte-components/ui/button";
   import { open } from "@tauri-apps/api/dialog";
   import { documentDir } from "@tauri-apps/api/path";

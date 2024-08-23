@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import { isGitAvailable } from "$lib/initialization";
+  import { isGitAvailable } from "@/integrated-backend/init";
   import { onMount } from "svelte";
 
   let errorMsg: string | undefined;

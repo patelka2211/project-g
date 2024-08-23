@@ -3,11 +3,11 @@
 
 mod browse;
 mod error;
-mod initialization;
+mod init;
 mod repository_checks;
 
 use browse::handlers::get_local_branches;
-use initialization::handlers::is_git_available;
+use init::handlers::is_git_available;
 use repository_checks::handlers::{
     assert_dot_git_folder, assert_origin_head, get_origin_fetch_url,
 };
@@ -15,7 +15,7 @@ use repository_checks::handlers::{
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
-            // initialization
+            // init
             is_git_available,
             // repository_checks
             assert_dot_git_folder,

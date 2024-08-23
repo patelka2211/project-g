@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
-  import { getLocalBranches, type Branch } from "$lib/browse";
+  import { getLocalBranches, type Branch } from "@/integrated-backend/browse";
   import Button from "@/shadcn-svelte-components/ui/button/button.svelte";
   import { onMount } from "svelte";
   import Branches from "./Branches.svelte";

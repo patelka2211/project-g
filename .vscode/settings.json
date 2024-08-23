@@ -5,7 +5,8 @@
   // "files.autoSave": "off",
   "workbench.editor.customLabels.enabled": true,
   "workbench.editor.customLabels.patterns": {
-    "**/src-tauri/src/**/mod.rs": "${dirname} - Module"
+    "**/src-tauri/src/**/mod.rs": "${dirname} - Module",
+    "**/src/routes/**/+page.svelte": "${dirname} - Page"
   },
   "svelte.enable-ts-plugin": true
 }

@@ -1,6 +1,5 @@
 <script lang="ts">
-  import type { Branch } from "$lib/browse";
-  import Button from "@/shadcn-svelte-components/ui/button/button.svelte";
+  import type { Branch } from "@/integrated-backend/browse";
   import { onDestroy, onMount } from "svelte";
 
   let branchesContainerElement: HTMLDivElement;
@@ -48,7 +47,6 @@
   {#if branches.length === 0}
     <div class=" flex flex-col items-center gap-4">
       <span> No branches </span>
-      <Button class="rounded-full">Create a branch</Button>
     </div>
   {:else}
     {#each branches as branch}
