@@ -1,10 +1,11 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
   import { verifyRepository } from "@/integrated-backend/repository-checks";
+  import { addRepo } from "@/integrated-backend/repository-store";
   import { Button } from "@/shadcn-svelte-components/ui/button";
   import { open } from "@tauri-apps/api/dialog";
   import { documentDir } from "@tauri-apps/api/path";
   import { toast } from "svelte-sonner";
+  import SavedRepos from "./saved-repos.svelte";
 
   let errorMsg: undefined | string = undefined;
 
@@ -18,7 +19,19 @@
     if (typeof selectedFolder === "string") {
       try {
         await verifyRepository(selectedFolder);
-        goto(`/browse?repo=${selectedFolder}`);
+
+        let folders = selectedFolder.split("/");
+
+        let [dir, name] = [
+          folders.slice(0, folders.length - 1).join("/"),
+          folders.at(-1) || "",
+        ];
+
+        // if adding repo to repo store fails then just redirect to browse page.
+        let id = await addRepo(dir, name);
+
+        console.log(id);
+        // goto(`/browse?repo=${selectedFolder}`);
       } catch (error) {
         console.error(error);
         toast.error((error as Error).toString());
@@ -41,7 +54,8 @@
 <div class="min-h-full flex flex-col items-center justify-around">
   <div class="flex flex-col items-center">
     <h1 class="font-semibold text-3xl mb-6">Welcome to Project G</h1>
-    <Button on:click={folderSelector} class="mb-4">Select folder</Button>
+    <SavedRepos />
+    <Button on:click={folderSelector}>Open another repository</Button>
   </div>
 </div>
 
