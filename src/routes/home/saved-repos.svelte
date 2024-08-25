@@ -1,46 +1,33 @@
 <script lang="ts">
   import {
     deleteRepo,
-    getRepos,
+    listRepos,
     type RepoInfo,
   } from "@/integrated-backend/repository-store";
   import { onMount } from "svelte";
+  import { toast } from "svelte-sonner";
   import OpenRepoBtn from "./open-repo-btn.svelte";
 
-  type RepoListItem = RepoInfo & { id: string };
-
-  let savedRepos: Array<RepoListItem> = [];
-
-  // async function deleteRepo(id: string) {}
+  let savedRepos: Array<RepoInfo> = [];
 
   function browseRepo(repoPath: string) {
-    // check if repo is available or not. if not then delete from repo store and show error.
+    // Verify the repository. if something goes wrong then delete from repo store and show error.
+    // if everything is okay then set as last opened the repository and then browse repository.
     console.log(repoPath);
     // goto(`/browse?repo=${repoPath}`);
   }
 
   onMount(async () => {
     try {
-      let repos = await getRepos();
-      savedRepos = Object.entries(repos)
-        .sort(([, a], [, b]) =>
-          `${a.dir}/${a.name}`.localeCompare(`${b.dir}/${b.name}`)
-        )
-        .map(([id, { dir, name }]): RepoListItem => {
-          return {
-            id,
-            name,
-            dir,
-          };
-        });
+      savedRepos = await listRepos();
     } catch (error) {
-      //
+      console.log(error);
+      toast.error("Not able to read saved repositories.");
     }
   });
 </script>
 
 {#if savedRepos.length !== 0}
-  <!-- <div class="mb-2">continue with opened repository.</div> -->
   <div
     class="repo-list flex flex-col items-center border w-[329px] max-h-[208px] mb-2 overflow-y-auto rounded-[12px]"
   >
@@ -69,8 +56,15 @@
         </div>
         <button
           class="w-[2rem] h-[2rem] border bg-background rounded-[4px] hover:bg-destructive hover:text-destructive-foreground"
-          on:click|stopPropagation|preventDefault={() => {
-            deleteRepo(repo.id);
+          on:click|stopPropagation|preventDefault={async () => {
+            try {
+              let deletedRepo = await deleteRepo(repo.id);
+              toast.success(
+                `Repository "${deletedRepo.name}" removed successfully.`
+              );
+            } catch (error) {
+              toast.error("Not able to remove the repository.");
+            }
           }}
         >
           D
@@ -81,7 +75,6 @@
   <div class="mb-2">or</div>
   <OpenRepoBtn buttonLabel="Add another repository" />
 {:else}
-  <div class="mb-2">Get started by adding repository</div>
   <OpenRepoBtn buttonLabel="Add repository" />
 {/if}
 

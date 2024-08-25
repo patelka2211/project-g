@@ -12,7 +12,7 @@ use init::handlers::is_git_available;
 use repository_checks::handlers::{
     assert_dot_git_folder, assert_origin_head, get_origin_fetch_url,
 };
-use repository_store::{add_repo, delete_repo, get_repos};
+use repository_store::{add_repo, delete_repo, list_repos, reorder_repo};
 
 fn main() {
     tauri::Builder::default()
@@ -26,7 +26,8 @@ fn main() {
             // repository_store
             add_repo,
             delete_repo,
-            get_repos,
+            list_repos,
+            reorder_repo,
             // browse
             get_local_branches
         ])

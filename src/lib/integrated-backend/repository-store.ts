@@ -1,11 +1,11 @@
 import { invoke } from "@tauri-apps/api/tauri";
 
-/**
- *
- * @param dir
- * @param name
- * @returns id
- */
+export interface RepoInfo {
+  id: string;
+  name: string;
+  dir: string;
+}
+
 export async function addRepo(dir: string, name: string) {
   try {
     return await invoke<string>("add_repo", {
@@ -19,25 +19,29 @@ export async function addRepo(dir: string, name: string) {
   }
 }
 
-export interface RepoInfo {
-  name: string;
-  dir: string;
-}
-
-export async function getRepos() {
+export async function listRepos() {
   try {
-    return await invoke<{ [id: string]: RepoInfo }>("get_repos");
+    return await invoke<Array<RepoInfo>>("list_repos");
   } catch (error) {
     console.log(error);
     throw Error("Cannot read saved repositories.");
   }
 }
 
-export async function deleteRepo(id: string) {
+export async function deleteRepo(repoId: string) {
   try {
-    return await invoke<void>("delete_repo", { id });
+    return await invoke<RepoInfo>("delete_repo", { repoId });
   } catch (error) {
     console.log(error);
     throw Error("Cannot delete repository.");
+  }
+}
+
+async function reorderRepo(repoId: string) {
+  try {
+    return await invoke<void>("reorder_repo", { repoId });
+  } catch (error) {
+    console.log(error);
+    throw Error("Cannot reorder repository.");
   }
 }
