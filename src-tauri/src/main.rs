@@ -5,14 +5,14 @@ mod browse;
 mod error;
 mod init;
 mod repository_checks;
-mod saved_repos;
+mod repository_store;
 
 use browse::handlers::get_local_branches;
 use init::handlers::is_git_available;
 use repository_checks::handlers::{
     assert_dot_git_folder, assert_origin_head, get_origin_fetch_url,
 };
-use saved_repos::{add_repo, delete_repo, get_repos};
+use repository_store::{add_repo, delete_repo, get_repos};
 
 fn main() {
     tauri::Builder::default()
@@ -23,7 +23,7 @@ fn main() {
             assert_dot_git_folder,
             assert_origin_head,
             get_origin_fetch_url,
-            // saved_repos
+            // repository_store
             add_repo,
             delete_repo,
             get_repos,

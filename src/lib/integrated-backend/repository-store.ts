@@ -32,3 +32,12 @@ export async function getRepos() {
     throw Error("Cannot read saved repositories.");
   }
 }
+
+export async function deleteRepo(id: string) {
+  try {
+    return await invoke<void>("delete_repo", { id });
+  } catch (error) {
+    console.log(error);
+    throw Error("Cannot delete repository.");
+  }
+}
