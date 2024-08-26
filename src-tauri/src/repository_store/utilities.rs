@@ -75,7 +75,7 @@ pub fn list_repos() -> Result<Vec<RepoInfo>> {
 }
 
 // Function to delete a repo by id and return the deleted repo
-pub fn delete_repo(repo_id: String) -> Result<RepoInfo> {
+pub fn remove_repo(repo_id: String) -> Result<RepoInfo> {
     let conn = create_or_open_db()?;
     let mut stmt = conn.prepare("SELECT id, name, dir FROM saved_repos WHERE id = ?1")?;
     let repo = stmt.query_row(params![repo_id], |row| {
@@ -91,9 +91,9 @@ pub fn delete_repo(repo_id: String) -> Result<RepoInfo> {
     Ok(repo)
 }
 
-// Function to update a repo list by deleting the old one and inserting the same as latest entry
+// Function to update a repo list by deleting the old one and inserting the same as new entry
 pub fn reorder_repo(repo_id: String) -> Result<()> {
-    let repo = delete_repo(repo_id)?;
+    let repo = remove_repo(repo_id)?;
 
     let conn = create_or_open_db()?;
     conn.execute(

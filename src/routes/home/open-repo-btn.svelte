@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { goto } from "$app/navigation";
   import { verifyRepository } from "@/integrated-backend/repository-checks";
   import { addRepo } from "@/integrated-backend/repository-store";
   import Button from "@/shadcn-svelte-components/ui/button/button.svelte";
@@ -26,11 +27,13 @@
           folders.at(-1) || "",
         ];
 
-        // if adding repo to repo store fails then just redirect to browse page.
-        let id = await addRepo(dir, name);
-
-        console.log(id);
-        // goto(`/browse?repo=${selectedFolder}`);
+        try {
+          await addRepo(dir, name);
+          await goto(`/browse?repo=${selectedFolder}`);
+        } catch (error) {
+          console.log(error);
+          await goto(`/browse?repo=${selectedFolder}`);
+        }
       } catch (error) {
         console.error(error);
         toast.error((error as Error).toString());

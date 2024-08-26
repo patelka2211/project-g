@@ -28,16 +28,16 @@ export async function listRepos() {
   }
 }
 
-export async function deleteRepo(repoId: string) {
+export async function removeRepo(repoId: string) {
   try {
-    return await invoke<RepoInfo>("delete_repo", { repoId });
+    return await invoke<RepoInfo>("remove_repo", { repoId });
   } catch (error) {
     console.log(error);
     throw Error("Cannot delete repository.");
   }
 }
 
-async function reorderRepo(repoId: string) {
+export async function reorderRepo(repoId: string) {
   try {
     return await invoke<void>("reorder_repo", { repoId });
   } catch (error) {

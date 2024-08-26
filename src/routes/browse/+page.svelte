@@ -2,9 +2,10 @@
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
   import { getLocalBranches, type Branch } from "@/integrated-backend/browse";
-  import Button from "@/shadcn-svelte-components/ui/button/button.svelte";
   import { onMount } from "svelte";
   import Branches from "./Branches.svelte";
+  import ArrowSmallLeftIcon from "@/codicons/arrow-small-left-icon.svelte";
+  import RefreshIcon from "@/codicons/refresh-icon.svelte";
 
   let repoPath = $page.url.searchParams.get("repo");
   let branches: Array<Branch> = [];
@@ -27,32 +28,37 @@
   }
 
   onMount(refreshBranches);
+
+  $: repoName = repoPath ? repoPath.split("/").at(-1) : repoPath;
 </script>
 
 <div
   class="flex flex-row items-center justify-between w-full p-2 h-12 border-b border-separate"
 >
-  <Button
-    variant="ghost"
-    size="sm"
-    class="aspect-square"
+  <button
+    class="
+    rounded-md
+    aspect-square h-8 hover:bg-accent hover:text-accent-foreground
+    "
     on:click={() => {
       goto("/home");
     }}
   >
-    B
-  </Button>
-  {#if repoPath}
-    <span>{repoPath.split("/").at(-1)}</span>
+    <ArrowSmallLeftIcon />
+  </button>
+  {#if repoName}
+    <span>{repoName}</span>
   {/if}
-  <Button
-    variant="ghost"
-    size="sm"
-    class="aspect-square"
+  <button
+    class="
+  rounded-md
+  aspect-square h-8 hover:bg-accent hover:text-accent-foreground
+  flex items-center justify-around
+  "
     on:click={refreshBranches}
   >
-    R
-  </Button>
+    <RefreshIcon class="w-2/3" />
+  </button>
 </div>
 
 <Branches {...{ branches }} />
