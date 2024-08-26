@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Branch } from "@/integrated-backend/browse";
+  import type { BranchInfo } from "@/integrated-backend/browse";
   import { onDestroy, onMount } from "svelte";
 
   let branchesContainerElement: HTMLDivElement;
@@ -37,12 +37,12 @@
     branchesContainerElement.removeEventListener("resize", handleScroll);
   });
 
-  export let branches: Array<Branch>;
+  export let branches: Array<BranchInfo>;
 </script>
 
 <div
   bind:this={branchesContainerElement}
-  class={`branches w-full flex items-center overflow-x-auto${branches.length === 0 ? " justify-around" : ""}`}
+  class={`h-full w-full flex items-center overflow-x-auto${branches.length === 0 ? " justify-around" : ""}`}
 >
   {#if branches.length === 0}
     <div class=" flex flex-col items-center gap-4">
@@ -67,21 +67,17 @@
 </div>
 
 <style lang="scss">
-  .branches {
-    height: calc(100% - 48px);
+  .branch {
+    height: 100%;
+    @apply min-w-96 bg-background;
 
-    .branch {
-      height: 100%;
-      @apply min-w-96 bg-background;
-
-      &.sticky {
-        transition: box-shadow 0.2s ease-in-out;
-        &.shadow-right {
-          box-shadow: 22px 0 70px 4px hsl(var(--foreground) / 0.08);
-        }
-        &.shadow-left {
-          box-shadow: -22px 0 70px 4px hsl(var(--foreground) / 0.08);
-        }
+    &.sticky {
+      transition: box-shadow 0.2s ease-in-out;
+      &.shadow-right {
+        box-shadow: 22px 0 70px 4px hsl(var(--foreground) / 0.08);
+      }
+      &.shadow-left {
+        box-shadow: -22px 0 70px 4px hsl(var(--foreground) / 0.08);
       }
     }
   }

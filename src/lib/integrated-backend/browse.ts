@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/tauri";
 
-export interface Branch {
+export interface BranchInfo {
   name: string;
   upstream?: string;
   isHead: boolean;
@@ -8,7 +8,7 @@ export interface Branch {
 }
 
 export async function getLocalBranches(repoPath: String) {
-  return await invoke<Array<Branch>>("get_local_branches", {
+  return await invoke<Array<BranchInfo>>("get_local_branches", {
     repoPath,
   });
 }
