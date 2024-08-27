@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
   import CloseIcon from "@/codicons/close-icon.svelte";
   import { verifyRepository } from "@/integrated-backend/repository-checks";
   import {
@@ -8,6 +7,7 @@
     reorderRepo,
     type RepoInfo,
   } from "@/integrated-backend/repository-store";
+  import { repoPath } from "@/stores/Repo";
   import { onMount } from "svelte";
   import { toast } from "svelte-sonner";
   import OpenRepoBtn from "./open-repo-btn.svelte";
@@ -17,11 +17,11 @@
   async function browseRepo(index: number) {
     try {
       let repo = savedRepos[index],
-        repoPath = `${repo.dir}/${repo.name}`;
+        _repoPath = `${repo.dir}/${repo.name}`;
 
-      await verifyRepository(repoPath);
+      await verifyRepository(_repoPath);
       await reorderRepo(repo.id);
-      await goto(`/browse?repo=${repoPath}`);
+      await repoPath.setAndBrowse(_repoPath);
     } catch (error) {
       console.log(error);
       await removeRepo_UIUtility(index, false);

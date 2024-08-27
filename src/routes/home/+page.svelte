@@ -6,7 +6,6 @@
   <div class="flex flex-col items-center">
     <h1 class="font-semibold text-3xl mb-6">Welcome to Project G</h1>
     <SavedRepos />
-    <!-- <OpenRepo buttonLabel="Open repo" /> -->
   </div>
 </div>
 

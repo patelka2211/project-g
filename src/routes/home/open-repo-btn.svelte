@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
   import { verifyRepository } from "@/integrated-backend/repository-checks";
   import { addRepo } from "@/integrated-backend/repository-store";
   import Button from "@/shadcn-svelte-components/ui/button/button.svelte";
+  import { repoPath } from "@/stores/Repo";
   import { open } from "@tauri-apps/api/dialog";
   import { documentDir } from "@tauri-apps/api/path";
   import { toast } from "svelte-sonner";
@@ -29,10 +29,10 @@
 
         try {
           await addRepo(dir, name);
-          await goto(`/browse?repo=${selectedFolder}`);
         } catch (error) {
           console.log(error);
-          await goto(`/browse?repo=${selectedFolder}`);
+        } finally {
+          await repoPath.setAndBrowse(selectedFolder);
         }
       } catch (error) {
         console.error(error);

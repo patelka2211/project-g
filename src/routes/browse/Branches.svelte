@@ -1,6 +1,9 @@
 <script lang="ts">
-  import type { BranchInfo } from "@/integrated-backend/browse";
+  import Separator from "@/shadcn-svelte-components/ui/separator/separator.svelte";
+  import { branches } from "@/stores/Branches";
+  import { repoPath } from "@/stores/Repo";
   import { onDestroy, onMount } from "svelte";
+  import Branch from "./Branch.svelte";
 
   let branchesContainerElement: HTMLDivElement;
   let currentBranchElement: HTMLDivElement | null;
@@ -28,6 +31,10 @@
   }
 
   onMount(() => {
+    if ($repoPath) {
+      branches.reload($repoPath);
+    }
+
     branchesContainerElement.addEventListener("scroll", handleScroll);
     branchesContainerElement.addEventListener("resize", handleScroll);
   });
@@ -35,49 +42,55 @@
   onDestroy(() => {
     branchesContainerElement.removeEventListener("scroll", handleScroll);
     branchesContainerElement.removeEventListener("resize", handleScroll);
+    currentBranchElement = null;
   });
-
-  export let branches: Array<BranchInfo>;
 </script>
 
 <div
   bind:this={branchesContainerElement}
-  class={`h-full w-full flex items-center overflow-x-auto${branches.length === 0 ? " justify-around" : ""}`}
+  class="branches w-[calc(100dvw - 4.25rem)] h-full flex items-center overflow-x-auto"
 >
-  {#if branches.length === 0}
-    <div class=" flex flex-col items-center gap-4">
-      <span> No branches </span>
-    </div>
-  {:else}
-    {#each branches as branch}
+  {#if $branches.length !== 0}
+    {#each $branches as branch, index (branch.name)}
       {#if branch.isHead}
         <div
+          class={`h-full min-w-[390px] bg-background
+          sticky ${defaultBranchShadowOn ? `shadow-${defaultBranchShadowOn}` : ""}`}
           bind:this={currentBranchElement}
-          class={`branch p-2 sticky${defaultBranchShadowOn === undefined ? "" : ` shadow-${defaultBranchShadowOn}`}`}
         >
-          {branch.name}
+          <Branch {...{ branch }} />
         </div>
       {:else}
-        <div class="branch p-2">
-          {branch.name}
+        <div class="h-full min-w-[390px] bg-background">
+          <Branch {...{ branch }} />
         </div>
       {/if}
+      {#if index !== $branches.length - 1}
+        <Separator orientation="vertical" />
+      {/if}
     {/each}
+  {:else}
+    <!-- option to create new branch -->
   {/if}
 </div>
 
 <style lang="scss">
-  .branch {
-    height: 100%;
-    @apply min-w-96 bg-background;
+  .branches {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
 
-    &.sticky {
-      transition: box-shadow 0.2s ease-in-out;
-      &.shadow-right {
-        box-shadow: 22px 0 70px 4px hsl(var(--foreground) / 0.08);
-      }
-      &.shadow-left {
-        box-shadow: -22px 0 70px 4px hsl(var(--foreground) / 0.08);
+    div {
+      &.sticky {
+        transition: box-shadow 0.2s ease-in-out;
+        &.shadow-right {
+          box-shadow: 22px 0 70px 4px hsl(var(--foreground) / 0.08);
+        }
+        &.shadow-left {
+          box-shadow: -22px 0 70px 4px hsl(var(--foreground) / 0.08);
+        }
       }
     }
   }
