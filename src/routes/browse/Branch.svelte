@@ -4,6 +4,9 @@
   export let branch: BranchInfo;
 </script>
 
-<div class="m-4">
-  {branch.name}
+<div class="p-2 border rounded-[14px]">
+  <button class="aspect-square h-[36px] border rounded-[6px]">hi</button>
+  <div class="truncate">
+    {branch.name}
+  </div>
 </div>

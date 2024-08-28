@@ -11,7 +11,7 @@
 >
   <div class="flex flex-col items-center gap-2">
     <button
-      class="aspect-square border w-[36px] rounded-lg hover:bg-accent hover:text-accent-foreground"
+      class="aspect-square border w-[36px] rounded-[6px] hover:bg-accent hover:text-accent-foreground"
       on:click={() => {
         goto("/home");
       }}
@@ -21,7 +21,7 @@
   </div>
   <div class="flex flex-col items-center gap-2">
     <button
-      class="aspect-square border w-[36px] rounded-lg hover:bg-accent hover:text-accent-foreground"
+      class="aspect-square border w-[36px] rounded-[6px] hover:bg-accent hover:text-accent-foreground"
       on:click={() => {
         if ($repoPath) {
           branches.reload($repoPath);

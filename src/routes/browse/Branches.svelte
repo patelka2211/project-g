@@ -51,23 +51,21 @@
   class="branches w-[calc(100dvw - 4.25rem)] h-full flex items-center overflow-x-auto"
 >
   {#if $branches.length !== 0}
-    {#each $branches as branch, index (branch.name)}
+    {#each $branches as branch (branch.name)}
       {#if branch.isHead}
         <div
-          class={`h-full min-w-[390px] bg-background
+          class={`h-full min-w-[390px] max-w-[390px] bg-background p-2
           sticky ${defaultBranchShadowOn ? `shadow-${defaultBranchShadowOn}` : ""}`}
           bind:this={currentBranchElement}
         >
           <Branch {...{ branch }} />
         </div>
       {:else}
-        <div class="h-full min-w-[390px] bg-background">
+        <div class="h-full min-w-[390px] max-w-[390px] bg-background p-2">
           <Branch {...{ branch }} />
         </div>
       {/if}
-      {#if index !== $branches.length - 1}
-        <Separator orientation="vertical" />
-      {/if}
+      <Separator orientation="vertical" />
     {/each}
   {:else}
     <!-- option to create new branch -->
