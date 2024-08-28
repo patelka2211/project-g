@@ -1,0 +1,1 @@
+- [Title bar](src/routes/+layout.svelte) should only be visible on macOS

@@ -20,6 +20,7 @@
 
 <Sonner richColors expand />
 
+<!-- Title bar -->
 {#if !titlebarHidden}
   <div data-tauri-drag-region class="draggable border-b border-separate"></div>
 {/if}
