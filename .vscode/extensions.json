@@ -1,0 +1,17 @@
+{
+  "recommendations": [
+    "tauri-apps.tauri-vscode",
+    "bradlc.vscode-tailwindcss",
+    "svelte.svelte-vscode",
+    "qwtel.sqlite-viewer",
+    "mrmlnc.vscode-scss",
+    "rust-lang.rust-analyzer",
+    "esbenp.prettier-vscode",
+    "mhutchie.git-graph",
+    "tamasfe.even-better-toml",
+    "usernamehw.errorlens",
+    "dbaeumer.vscode-eslint",
+    "vadimcn.vscode-lldb",
+    "ms-vscode.vscode-typescript-next"
+  ]
+}
