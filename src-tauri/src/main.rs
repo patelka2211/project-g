@@ -7,12 +7,14 @@ mod init;
 mod repository_checks;
 mod repository_store;
 
-use browse::handlers::get_local_branches;
-use init::handlers::is_git_available;
-use repository_checks::handlers::{
-    assert_dot_git_folder, assert_origin_head, get_origin_fetch_url,
+use crate::{
+    browse::handlers::get_local_branches,
+    init::handlers::is_git_available,
+    repository_checks::handlers::{
+        assert_dot_git_folder, assert_origin_head, get_origin_fetch_url,
+    },
+    repository_store::handlers::{add_repo, list_repos, remove_repo, reorder_repo},
 };
-use repository_store::handlers::{add_repo, list_repos, remove_repo, reorder_repo};
 
 fn main() {
     tauri::Builder::default()

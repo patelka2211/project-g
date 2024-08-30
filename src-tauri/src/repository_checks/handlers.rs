@@ -1,5 +1,6 @@
-use super::utilities;
 use std::{fs::metadata, path::Path};
+
+use super::utilities;
 
 #[tauri::command]
 /// If provided repository path is not a repository then throws error.

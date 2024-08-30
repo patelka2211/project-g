@@ -1,11 +1,13 @@
-use crate::error::Result;
 use git2::Repository;
+
 use std::{
     fs::File,
     io::Write,
     path::Path,
     process::{Command, Output},
 };
+
+use crate::error::Result;
 
 pub fn get_origin_fetch_url(repo_path: String) -> Result<Option<String>> {
     let repo = Repository::open(repo_path)?;

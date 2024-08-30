@@ -1,8 +1,10 @@
-use crate::error::Result;
 use rusqlite::{params, Connection, Result as RusqliteResult};
 use serde::Serialize;
-use std::path::Path;
 use uuid::Uuid;
+
+use std::path::Path;
+
+use crate::error::Result;
 
 #[derive(Serialize)]
 pub struct RepoInfo {

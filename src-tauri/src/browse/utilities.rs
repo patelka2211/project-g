@@ -1,6 +1,7 @@
-use crate::error::Result;
 use git2::{BranchType, Repository};
 use serde::Serialize;
+
+use crate::error::Result;
 
 #[derive(Serialize)]
 pub struct Branch {
