@@ -1,13 +1,13 @@
 <script lang="ts">
-  import Separator from "@/shadcn-svelte-components/ui/separator/separator.svelte";
   import { branches } from "@/stores/Branches";
   import { repoPath } from "@/stores/Repo";
   import { onDestroy, onMount } from "svelte";
+  import { watch } from "tauri-plugin-fs-watch-api";
   import Branch from "./Branch.svelte";
 
   let branchesContainerElement: HTMLDivElement;
-  let currentBranchElement: HTMLDivElement | null;
-  let defaultBranchShadowOn: "left" | "right" | undefined = undefined;
+  let currentBranchElement: HTMLDivElement | null = null;
+  let unwatch: Awaited<ReturnType<typeof watch>> | undefined = undefined;
 
   function handleScroll() {
     if (currentBranchElement === null) return;
@@ -18,31 +18,42 @@
     if (branchRect.left <= containerRect.left) {
       currentBranchElement.style.left = "0px";
       currentBranchElement.style.right = "unset";
-      defaultBranchShadowOn = "right";
     } else if (branchRect.right >= containerRect.right) {
       currentBranchElement.style.right = "0px";
       currentBranchElement.style.left = "unset";
-      defaultBranchShadowOn = "left";
     } else {
       currentBranchElement.style.left = "unset";
       currentBranchElement.style.right = "unset";
-      defaultBranchShadowOn = undefined;
     }
   }
 
-  onMount(() => {
-    if ($repoPath) {
-      branches.reload($repoPath);
-    }
-
+  onMount(async () => {
     branchesContainerElement.addEventListener("scroll", handleScroll);
     branchesContainerElement.addEventListener("resize", handleScroll);
+
+    if ($repoPath) {
+      branches.reload($repoPath);
+      unwatch = await watch(
+        [
+          `${$repoPath}/.git/refs/heads`,
+          `${$repoPath}/.git/refs/remotes`,
+          `${$repoPath}/.git/HEAD`,
+        ],
+        (_event) => {
+          branches.reload($repoPath);
+          handleScroll();
+        },
+        { recursive: true, delayMs: 1000 }
+      );
+    }
   });
 
   onDestroy(() => {
     branchesContainerElement.removeEventListener("scroll", handleScroll);
     branchesContainerElement.removeEventListener("resize", handleScroll);
     currentBranchElement = null;
+
+    if (unwatch) unwatch();
   });
 </script>
 
@@ -54,18 +65,19 @@
     {#each $branches as branch (branch.name)}
       {#if branch.isHead}
         <div
-          class={`h-full min-w-[390px] max-w-[390px] bg-background p-2
-          sticky ${defaultBranchShadowOn ? `shadow-${defaultBranchShadowOn}` : ""}`}
+          class={`h-full min-w-[390px] max-w-[390px] bg-background p-2 border-l first:border-l-0 last:border-r
+          sticky`}
           bind:this={currentBranchElement}
         >
           <Branch {...{ branch }} />
         </div>
       {:else}
-        <div class="h-full min-w-[390px] max-w-[390px] bg-background p-2">
+        <div
+          class="h-full min-w-[390px] max-w-[390px] bg-background p-2 border-l first:border-l-0 last:border-r"
+        >
           <Branch {...{ branch }} />
         </div>
       {/if}
-      <Separator orientation="vertical" />
     {/each}
   {:else}
     <!-- option to create new branch -->
@@ -78,18 +90,6 @@
     scrollbar-width: none;
     &::-webkit-scrollbar {
       display: none;
-    }
-
-    div {
-      &.sticky {
-        transition: box-shadow 0.2s ease-in-out;
-        &.shadow-right {
-          box-shadow: 22px 0 70px 4px hsl(var(--foreground) / 0.08);
-        }
-        &.shadow-left {
-          box-shadow: -22px 0 70px 4px hsl(var(--foreground) / 0.08);
-        }
-      }
     }
   }
 </style>

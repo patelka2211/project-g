@@ -18,6 +18,7 @@ use crate::{
 
 fn main() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_fs_watch::init())
         .invoke_handler(tauri::generate_handler![
             // init
             is_git_available,
