@@ -59,22 +59,16 @@
 
 <div
   bind:this={branchesContainerElement}
-  class="branches w-[calc(100dvw - 4.25rem)] h-full flex items-center overflow-x-auto"
+  class="branches-container w-[calc(100dvw - 4.25rem)] h-full flex items-center overflow-x-auto"
 >
   {#if $branches.length !== 0}
     {#each $branches as branch (branch.name)}
       {#if branch.isHead}
-        <div
-          class={`h-full min-w-[390px] max-w-[390px] bg-background p-2 border-l first:border-l-0 last:border-r
-          sticky`}
-          bind:this={currentBranchElement}
-        >
+        <div class="branch-container sticky" bind:this={currentBranchElement}>
           <Branch {...{ branch }} />
         </div>
       {:else}
-        <div
-          class="h-full min-w-[390px] max-w-[390px] bg-background p-2 border-l first:border-l-0 last:border-r"
-        >
+        <div class="branch-container">
           <Branch {...{ branch }} />
         </div>
       {/if}
@@ -85,11 +79,15 @@
 </div>
 
 <style lang="scss">
-  .branches {
+  .branches-container {
     -ms-overflow-style: none;
     scrollbar-width: none;
     &::-webkit-scrollbar {
       display: none;
+    }
+
+    .branch-container {
+      @apply h-full min-w-[390px] max-w-[390px] bg-background p-2 border-l first:border-l-0 last:border-r;
     }
   }
 </style>
