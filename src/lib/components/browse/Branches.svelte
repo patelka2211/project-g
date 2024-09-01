@@ -87,7 +87,7 @@
     }
 
     .branch-container {
-      @apply h-full min-w-[390px] max-w-[390px] bg-background p-2 border-l first:border-l-0 last:border-r;
+      @apply h-full bg-background p-[14px] border-l first:border-l-0 last:border-r;
     }
   }
 </style>

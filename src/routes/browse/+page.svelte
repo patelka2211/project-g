@@ -1,10 +1,10 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
+  import Branches from "@/components/browse/Branches.svelte";
+  import Sidebar from "@/components/browse/Sidebar.svelte";
   import { repoPath } from "@/stores/Repo";
   import { onDestroy, onMount } from "svelte";
   import { toast } from "svelte-sonner";
-  import Branches from "./Branches.svelte";
-  import Sidebar from "./Sidebar.svelte";
 
   onMount(async () => {
     if ($repoPath === null) {
