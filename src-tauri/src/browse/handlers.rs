@@ -6,7 +6,7 @@ use super::utilities;
 /// // returns
 /// Array<{
 ///     name: string,
-///     upstream?: string,
+///     upstream: string | null,
 ///     isHead: boolean,
 ///     commitTime: number
 /// }>

@@ -2,7 +2,7 @@ import { invoke } from "@tauri-apps/api/tauri";
 
 export interface BranchInfo {
   name: string;
-  upstream?: string;
+  upstream: string | null;
   isHead: boolean;
   commitTime: number;
 }
