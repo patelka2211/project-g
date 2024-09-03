@@ -43,7 +43,7 @@
           branches.reload($repoPath);
           handleScroll();
         },
-        { recursive: true, delayMs: 1000 }
+        { recursive: true, delayMs: 100 }
       );
     }
   });

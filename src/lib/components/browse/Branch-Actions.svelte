@@ -5,7 +5,10 @@
   import PushIcon from "@/codicons/push-icon.svelte";
   import TargetIcon from "@/codicons/target-icon.svelte";
   import TrashIcon from "@/codicons/trash-icon.svelte";
+  import { switchBranch } from "@/integrated-backend/branch-actions";
   import type { BranchInfo } from "@/integrated-backend/browse";
+  import { repoPath } from "@/stores/Repo";
+  import { toast } from "svelte-sonner";
 
   export let branch: BranchInfo;
 </script>
@@ -15,9 +18,16 @@
   <button
     class={`action-button ${branch.isHead ? "bg-accent-foreground text-accent" : "action_target"}`}
     title={`${branch.isHead ? "Already on" : "Switch to"} ${branch.name}`}
-    on:click={() => {
+    on:click={async () => {
       if (branch.isHead === true) return;
-      console.log(`Switch to ${branch.name}`);
+
+      if ($repoPath) {
+        try {
+          await switchBranch($repoPath, branch.name);
+        } catch (error) {
+          if (typeof error === "string") toast.error(error);
+        }
+      }
     }}
   >
     <TargetIcon class="aspect-square h-full" />
@@ -25,7 +35,7 @@
 
   <!-- fetch -->
   <button
-    class={`action-button action_common${branch.upstream !== null ? undefined : " action_disabled"}`}
+    class={`action-button action_common${branch.upstream === null ? " action_disabled" : ""}`}
     title={branch.upstream !== null
       ? `Fetch from ${branch.upstream}`
       : undefined}
@@ -41,7 +51,7 @@
 
   <!-- pull -->
   <button
-    class={`action-button action_common ${branch.upstream !== null ? undefined : "action_disabled"}`}
+    class={`action-button action_common${branch.upstream === null ? " action_disabled" : ""}`}
     title={branch.upstream !== null
       ? `Pull from ${branch.upstream}`
       : undefined}
@@ -80,8 +90,10 @@
 
   <!-- delete -->
   <button
-    class="action-button action_delete"
+    class={`action-button action_delete${branch.isHead === true ? " action_disabled" : ""}`}
     on:click={() => {
+      if (branch.isHead) return;
+
       if (branch.upstream !== null) {
         console.log(
           `Compare with ${branch.upstream} and delete if up-to-date else throw error accordingly`
@@ -112,14 +124,20 @@
 
     &.action_common {
       @apply hover:bg-accent hover:text-accent-foreground;
-
-      &.action_disabled {
-        @apply opacity-50 cursor-not-allowed;
-      }
     }
 
     &.action_delete {
       @apply hover:bg-destructive hover:text-destructive-foreground;
+    }
+
+    &.action_common,
+    &.action_delete {
+      &.action_disabled {
+        @apply opacity-50;
+        @apply cursor-not-allowed;
+        @apply shadow-none hover:shadow-none;
+        @apply hover:bg-background hover:text-foreground;
+      }
     }
   }
 </style>

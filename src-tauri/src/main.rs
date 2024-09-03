@@ -1,13 +1,19 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod branch_actions;
 mod browse;
 mod error;
+mod git_executor;
+mod git_utilities;
 mod init;
 mod repository_checks;
 mod repository_store;
 
 use crate::{
+    branch_actions::handlers::{
+        delete_branch, fetch_branch, pull_branch, push_branch, switch_branch,
+    },
     browse::handlers::get_local_branches,
     init::handlers::is_git_available,
     repository_checks::handlers::{
@@ -32,7 +38,13 @@ fn main() {
             remove_repo,
             reorder_repo,
             // browse
-            get_local_branches
+            get_local_branches,
+            // branch_actions
+            delete_branch,
+            fetch_branch,
+            pull_branch,
+            push_branch,
+            switch_branch
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
