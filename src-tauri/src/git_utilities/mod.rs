@@ -14,7 +14,7 @@ pub fn compare_branches(
     let temp = format!("{}...{}", branch1, branch2);
     let output = run(
         repo_path,
-        "rev-path",
+        "rev-list",
         &vec!["--count", "--left-right", temp.as_str()],
     )?;
 

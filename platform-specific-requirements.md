@@ -1,1 +1,2 @@
-- [Title bar](src/routes/+layout.svelte) should only be visible on macOS
+- [Title bar](src/routes/+layout.svelte) should only be visible on macOS.
+- [Saved repositories](src-tauri/src/repository_store/utilities.rs) storage path should be changed in production.

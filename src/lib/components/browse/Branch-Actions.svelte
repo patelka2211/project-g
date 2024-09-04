@@ -5,12 +5,94 @@
   import PushIcon from "@/codicons/push-icon.svelte";
   import TargetIcon from "@/codicons/target-icon.svelte";
   import TrashIcon from "@/codicons/trash-icon.svelte";
-  import { switchBranch } from "@/integrated-backend/branch-actions";
+  import {
+    deleteBranch,
+    fetchBranch,
+    pullBranch,
+    pushBranch,
+    switchBranch,
+    type BranchType,
+  } from "@/integrated-backend/branch-actions";
   import type { BranchInfo } from "@/integrated-backend/browse";
   import { repoPath } from "@/stores/Repo";
   import { toast } from "svelte-sonner";
 
   export let branch: BranchInfo;
+
+  async function switchOnClick() {
+    if (branch.isHead === true) return;
+
+    if ($repoPath) {
+      try {
+        await switchBranch($repoPath, branch.name);
+      } catch (error) {
+        if (typeof error === "string") toast.error(error);
+      }
+    }
+  }
+
+  async function fetchOnClick() {
+    if (branch.upstream === null) return;
+
+    if ($repoPath) {
+      const [remote, ...other] = branch.upstream.split("/");
+      try {
+        await fetchBranch($repoPath, { name: other.join("/"), remote });
+      } catch (error) {
+        if (typeof error === "string") toast.error(error);
+      }
+    }
+  }
+
+  async function pullOnClick() {
+    if (branch.upstream === null) return;
+
+    if ($repoPath) {
+      const [remote, ...other] = branch.upstream.split("/");
+      try {
+        await pullBranch($repoPath, { name: other.join("/"), remote });
+      } catch (error) {
+        if (typeof error === "string") toast.error(error);
+      }
+    }
+  }
+
+  async function pushOnClick() {
+    if ($repoPath) {
+      let branchType: BranchType;
+      const [remote, name] = branch.upstream
+        ? (() => {
+            const [remote, ...other] = branch.upstream.split("/");
+
+            branchType = "Remote";
+
+            return [remote, other.join("/")];
+          })()
+        : (() => {
+            branchType = "Local";
+
+            return ["origin", branch.name];
+          })();
+
+      try {
+        await pushBranch($repoPath, { name, remote }, branchType);
+      } catch (error) {
+        if (typeof error === "string") toast.error(error);
+      }
+    }
+  }
+
+  async function deleteOnClick() {
+    if (branch.isHead) return;
+
+    if ($repoPath) {
+      try {
+        await deleteBranch($repoPath, branch.name, branch.upstream, false);
+      } catch (error) {
+        if (typeof error === "string") toast.error(error);
+      }
+    }
+  }
 </script>
 
 <div class="flex items-center justify-between gap-[6px]">
@@ -18,17 +100,7 @@
   <button
     class={`action-button ${branch.isHead ? "bg-accent-foreground text-accent" : "action_target"}`}
     title={`${branch.isHead ? "Already on" : "Switch to"} ${branch.name}`}
-    on:click={async () => {
-      if (branch.isHead === true) return;
-
-      if ($repoPath) {
-        try {
-          await switchBranch($repoPath, branch.name);
-        } catch (error) {
-          if (typeof error === "string") toast.error(error);
-        }
-      }
-    }}
+    on:click={switchOnClick}
   >
     <TargetIcon class="aspect-square h-full" />
   </button>
@@ -39,11 +111,7 @@
     title={branch.upstream !== null
       ? `Fetch from ${branch.upstream}`
       : undefined}
-    on:click={() => {
-      if (branch.upstream === null) return;
-
-      console.log(`Fetch from ${branch.upstream}`);
-    }}
+    on:click={fetchOnClick}
   >
     <FetchIcon class="aspect-square h-full" />
     <span>Fetch</span>
@@ -55,11 +123,7 @@
     title={branch.upstream !== null
       ? `Pull from ${branch.upstream}`
       : undefined}
-    on:click={() => {
-      if (branch.upstream === null) return;
-
-      console.log(`Pull from ${branch.upstream}`);
-    }}
+    on:click={pullOnClick}
   >
     <PullIcon class="aspect-square h-full" />
     <span>Pull</span>
@@ -71,13 +135,7 @@
     title={branch.upstream !== null
       ? `Push to ${branch.upstream}`
       : `Publish as origin/${branch.name}`}
-    on:click={() => {
-      if (branch.upstream !== null) {
-        console.log(`Push to ${branch.upstream}`);
-      } else {
-        console.log(`Publish to origin/${branch.name}`);
-      }
-    }}
+    on:click={pushOnClick}
   >
     {#if branch.upstream !== null}
       <PushIcon class="aspect-square h-full" />
@@ -91,19 +149,7 @@
   <!-- delete -->
   <button
     class={`action-button action_delete${branch.isHead === true ? " action_disabled" : ""}`}
-    on:click={() => {
-      if (branch.isHead) return;
-
-      if (branch.upstream !== null) {
-        console.log(
-          `Compare with ${branch.upstream} and delete if up-to-date else throw error accordingly`
-        );
-      } else {
-        console.log(
-          "Compare with origin/HEAD and delete if up-to-date else throw error accordingly"
-        );
-      }
-    }}
+    on:click={deleteOnClick}
   >
     <TrashIcon class="aspect-square h-full" />
     <span>Delete</span>
