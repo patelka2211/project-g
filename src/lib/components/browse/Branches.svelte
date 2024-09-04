@@ -1,10 +1,10 @@
 <script lang="ts">
+  import { Button } from "@/shadcn-svelte-components/ui/button";
   import { branches } from "@/stores/Branches";
   import { repoPath } from "@/stores/Repo";
   import { onDestroy, onMount } from "svelte";
   import { watch } from "tauri-plugin-fs-watch-api";
   import Branch from "./Branch.svelte";
-  import { Button } from "@/shadcn-svelte-components/ui/button";
 
   let branchesContainerElement: HTMLDivElement;
   let currentBranchElement: HTMLDivElement | null = null;
@@ -74,9 +74,10 @@
         </div>
       {/if}
     {/each}
-    <div class="h-full border-r-[0.5px]"></div>
-  {:else}
-    <div class="h-full min-w-[calc(100dvw-68px)] flex border-l-[0.5px]">
+  {/if}
+  <div class="h-full border-r-[0.5px]"></div>
+  {#if $branches.length === 0}
+    <div class="h-full min-w-[calc(100dvw-68px)] flex">
       <div class="flex flex-col items-center m-auto gap-2">
         No branches!
         <Button>Create new branch</Button>
