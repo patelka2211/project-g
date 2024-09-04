@@ -37,11 +37,11 @@ pub fn fetch_branch(repo_path: String, remote_branch: RemoteBranchInfo) -> Resul
 }
 
 #[tauri::command]
-pub fn pull_branch(repo_path: String, remote_branch_name: RemoteBranchInfo) -> Result<(), String> {
+pub fn pull_branch(repo_path: String, remote_branch: RemoteBranchInfo) -> Result<(), String> {
     match run(
         &repo_path,
         "pull",
-        &vec![remote_branch_name.remote, remote_branch_name.name],
+        &vec![remote_branch.remote, remote_branch.name],
     ) {
         Ok(_output) => Ok(()),
         Err(error) => Err(error.to_string()),
@@ -59,7 +59,8 @@ pub fn push_branch(
         BranchType::Remote => vec![],
     };
 
-    args.extend(vec![remote_branch.remote, remote_branch.name]);
+    args.push(&remote_branch.remote);
+    args.push(&remote_branch.name);
 
     match run(&repo_path, "push", &args) {
         Ok(_output) => Ok(()),
