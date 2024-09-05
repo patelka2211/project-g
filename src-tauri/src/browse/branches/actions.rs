@@ -1,8 +1,22 @@
+mod utilities {
+    use crate::{_backend_specific::git::executor::run_command, error::Result};
+
+    pub fn delete_branch(
+        repo_path: &String,
+        branch_name: &String,
+        delete_mode: &String,
+    ) -> Result<()> {
+        let args = vec![branch_name.as_str(), delete_mode.as_str()];
+
+        run_command(&repo_path, "branch", &args)?;
+
+        Ok(())
+    }
+}
+
 use serde::Deserialize;
 
-use crate::{git_executor::run, git_utilities::compare_branches};
-
-use super::utilities;
+use crate::_backend_specific::git::{executor::run_command, utilities::compare_branches};
 
 #[derive(Deserialize)]
 pub struct RemoteBranchInfo<'a> {
@@ -18,7 +32,7 @@ pub enum BranchType {
 
 #[tauri::command]
 pub fn switch_branch(repo_path: String, branch_name: String) -> Result<(), String> {
-    match run(&repo_path, "switch", &vec![&branch_name]) {
+    match run_command(&repo_path, "switch", &vec![&branch_name]) {
         Ok(_output) => Ok(()),
         Err(error) => Err(error.to_string()),
     }
@@ -26,7 +40,7 @@ pub fn switch_branch(repo_path: String, branch_name: String) -> Result<(), Strin
 
 #[tauri::command]
 pub fn fetch_branch(repo_path: String, remote_branch: RemoteBranchInfo) -> Result<(), String> {
-    match run(
+    match run_command(
         &repo_path,
         "fetch",
         &vec![remote_branch.remote, remote_branch.name],
@@ -38,7 +52,7 @@ pub fn fetch_branch(repo_path: String, remote_branch: RemoteBranchInfo) -> Resul
 
 #[tauri::command]
 pub fn pull_branch(repo_path: String, remote_branch: RemoteBranchInfo) -> Result<(), String> {
-    match run(
+    match run_command(
         &repo_path,
         "pull",
         &vec![remote_branch.remote, remote_branch.name],
@@ -62,7 +76,7 @@ pub fn push_branch(
     args.push(&remote_branch.remote);
     args.push(&remote_branch.name);
 
-    match run(&repo_path, "push", &args) {
+    match run_command(&repo_path, "push", &args) {
         Ok(_output) => Ok(()),
         Err(error) => Err(error.to_string()),
     }

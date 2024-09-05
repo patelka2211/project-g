@@ -2,7 +2,7 @@ use std::process::{Command, Output};
 
 use crate::error::Result;
 
-pub fn run(repo_path: &String, command: &str, args: &Vec<&str>) -> Result<String> {
+pub fn run_command(repo_path: &String, command: &str, args: &Vec<&str>) -> Result<String> {
     let mut git_args = vec![command];
     git_args.extend(args);
 

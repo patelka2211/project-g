@@ -1,4 +1,6 @@
-use crate::{error::Result, git_executor::run};
+use crate::error::Result;
+
+use super::executor::run_command;
 
 pub struct BranchComparision {
     pub ahead: i32,
@@ -12,7 +14,7 @@ pub fn compare_branches(
 ) -> Result<BranchComparision> {
     //
     let temp = format!("{}...{}", branch1, branch2);
-    let output = run(
+    let output = run_command(
         repo_path,
         "rev-list",
         &vec!["--count", "--left-right", temp.as_str()],

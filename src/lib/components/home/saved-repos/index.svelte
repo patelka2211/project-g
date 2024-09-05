@@ -1,13 +1,13 @@
 <script lang="ts">
   import CloseIcon from "@/codicons/close-icon.svelte";
-  import { verifyRepository } from "@/integrated-backend/repository-checks";
+  import { verifyRepository } from "@/integrated-backend/home/repositories/checks";
   import {
     listRepos,
     removeRepo,
     reorderRepo,
     type RepoInfo,
-  } from "@/integrated-backend/repository-store";
-  import { repoPath } from "@/stores/Repo";
+  } from "@/integrated-backend/home/repositories/saved";
+  import { repoPath } from "@/stores/repo";
   import { onMount } from "svelte";
   import { toast } from "svelte-sonner";
   import OpenRepoBtn from "./open-repo-btn.svelte";

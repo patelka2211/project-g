@@ -1,8 +1,8 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import Branches from "@/components/browse/Branches.svelte";
-  import Sidebar from "@/components/browse/Sidebar.svelte";
-  import { repoPath } from "@/stores/Repo";
+  import { Branches } from "@/components/browse/branches";
+  import { Sidebar } from "@/components/browse/sidebar";
+  import { repoPath } from "@/stores/repo";
   import { onDestroy, onMount } from "svelte";
   import { toast } from "svelte-sonner";
 

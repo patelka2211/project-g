@@ -1,10 +1,10 @@
 <script lang="ts">
   import { Button } from "@/shadcn-svelte-components/ui/button";
-  import { branches } from "@/stores/Branches";
-  import { repoPath } from "@/stores/Repo";
+  import { branches } from "@/stores/branches";
+  import { repoPath } from "@/stores/repo";
   import { onDestroy, onMount } from "svelte";
   import { watch } from "tauri-plugin-fs-watch-api";
-  import Branch from "./Branch.svelte";
+  import Branch from "./branch.svelte";
 
   let branchesContainerElement: HTMLDivElement;
   let currentBranchElement: HTMLDivElement | null = null;

@@ -2,8 +2,8 @@
   import { goto } from "$app/navigation";
   import ArrowSmallLeftIcon from "@/codicons/arrow-small-left-icon.svelte";
   import RefreshIcon from "@/codicons/refresh-icon.svelte";
-  import { branches } from "@/stores/Branches";
-  import { repoPath } from "@/stores/Repo";
+  import { branches } from "@/stores/branches";
+  import { repoPath } from "@/stores/repo";
 </script>
 
 <div

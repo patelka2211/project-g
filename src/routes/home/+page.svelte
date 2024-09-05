@@ -1,5 +1,5 @@
 <script lang="ts">
-  import SavedRepos from "./saved-repos.svelte";
+  import { SavedRepos } from "@/components/home/saved-repos";
 </script>
 
 <div class="min-h-full flex flex-col items-center justify-around">
