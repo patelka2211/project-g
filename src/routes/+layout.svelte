@@ -1,9 +1,9 @@
 <script>
+  import Sonner from "@/shadcn-svelte-components/ui/sonner/sonner.svelte";
   import { appWindow } from "@tauri-apps/api/window";
   import { ModeWatcher } from "mode-watcher";
   import { onMount } from "svelte";
   import "../app.css";
-  import Sonner from "@/shadcn-svelte-components/ui/sonner/sonner.svelte";
 
   let titlebarHidden = false;
 
@@ -22,24 +22,12 @@
 
 <!-- Title bar -->
 {#if !titlebarHidden}
-  <div data-tauri-drag-region class="draggable border-b border-separate"></div>
+  <div
+    data-tauri-drag-region
+    class="w-dvw h-[28px] border-b border-separate"
+  ></div>
 {/if}
 
-<div class={`window-content${titlebarHidden ? " fullscreen" : ""}`}>
+<div class={`w-dvw ${titlebarHidden ? "h-dvh" : "h-[calc(100dvh-28px)]"}`}>
   <slot></slot>
 </div>
-
-<style>
-  .draggable {
-    height: 28px;
-    width: 100vw;
-  }
-
-  .window-content {
-    width: 100dvw;
-    height: calc(100dvh - 28px);
-  }
-  .window-content.fullscreen {
-    height: 100dvh;
-  }
-</style>

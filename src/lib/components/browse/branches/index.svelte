@@ -60,7 +60,7 @@
 
 <div
   bind:this={branchesContainerElement}
-  class="branches-container w-[calc(100dvw - 4.25rem)] h-full flex items-center overflow-x-auto"
+  class="branches-container h-full flex items-center overflow-x-auto"
 >
   {#if $branches.length !== 0}
     {#each $branches as branch (branch.name)}

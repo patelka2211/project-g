@@ -5,7 +5,7 @@ import {
 import { writable } from "svelte/store";
 
 export let branches = (() => {
-  let branchesStore = writable<Array<BranchInfo>>([]);
+  let store = writable<Array<BranchInfo>>([]);
 
   async function reload(repoPath: string) {
     try {
@@ -14,14 +14,14 @@ export let branches = (() => {
         else return b.commitTime - a.commitTime;
       });
 
-      branchesStore.set(branches);
+      store.set(branches);
     } catch (error) {
       console.error(error);
     }
   }
 
   return {
-    ...branchesStore,
+    ...store,
     reload,
   };
 })();

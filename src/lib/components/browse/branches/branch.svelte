@@ -5,7 +5,7 @@
   export let branch: BranchInfo;
 </script>
 
-<div class="p-2 border rounded-[12px]">
+<div class="p-[6px] border rounded-[12px]">
   <Actions {branch} />
   {branch.name}
 </div>
