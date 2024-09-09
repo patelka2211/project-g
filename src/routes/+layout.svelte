@@ -1,18 +1,24 @@
-<script>
+<script lang="ts">
   import Sonner from "@/shadcn-svelte-components/ui/sonner/sonner.svelte";
   import { appWindow } from "@tauri-apps/api/window";
   import { ModeWatcher } from "mode-watcher";
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import "../app.css";
 
-  let titlebarHidden = false;
+  let isFullscreen = false;
+  let unlisten: Awaited<ReturnType<typeof appWindow.onResized>>;
 
   async function checkFullscreen() {
-    titlebarHidden = await appWindow.isFullscreen();
+    isFullscreen = await appWindow.isFullscreen();
   }
 
-  onMount(() => {
-    appWindow.onResized(checkFullscreen);
+  onMount(async () => {
+    await checkFullscreen();
+    unlisten = await appWindow.onResized(checkFullscreen);
+  });
+
+  onDestroy(() => {
+    unlisten();
   });
 </script>
 
@@ -21,13 +27,14 @@
 <Sonner richColors expand />
 
 <!-- Title bar -->
-{#if !titlebarHidden}
+{#if !isFullscreen}
   <div
     data-tauri-drag-region
-    class="w-dvw h-[28px] border-b border-separate"
+    class="fixed z-[10000] top-0 left-0 w-dvw h-[28px] border-b border-separate bg-background select-none"
   ></div>
+  <div class="h-[28px]"></div>
 {/if}
 
-<div class={`w-dvw ${titlebarHidden ? "h-dvh" : "h-[calc(100dvh-28px)]"}`}>
+<div class={`w-dvw ${isFullscreen ? "h-dvh" : "h-[calc(100dvh-28px)]"}`}>
   <slot></slot>
 </div>
