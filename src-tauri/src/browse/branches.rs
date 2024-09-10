@@ -13,6 +13,8 @@ mod utilities {
         is_head: bool,
         #[serde(rename(serialize = "commitTime"))]
         commit_time: u64,
+        #[serde(rename(serialize = "commitHash"))]
+        commit_hash: String,
     }
 
     pub fn get_local_branches(repo_path: String) -> Result<Vec<Branch>> {
@@ -54,11 +56,17 @@ mod utilities {
                 Err(_) => continue,
             };
 
+            let commit_hash = match branch.get().peel_to_commit() {
+                Ok(commit) => commit.id().to_string(),
+                Err(_) => continue,
+            };
+
             output.push(Branch {
                 name,
                 upstream,
                 is_head,
                 commit_time,
+                commit_hash,
             });
         }
 
@@ -74,7 +82,8 @@ mod utilities {
 ///     name: string,
 ///     upstream: string | null,
 ///     isHead: boolean,
-///     commitTime: number
+///     commitTime: number,
+///     commitHash: string
 /// }>
 /// ```
 pub fn get_local_branches(
