@@ -1,4 +1,6 @@
 pub mod actions;
+pub mod commit_history;
+
 mod utilities {
     use git2::{BranchType, Repository};
     use serde::Serialize;

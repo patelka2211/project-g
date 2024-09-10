@@ -10,6 +10,7 @@ mod init;
 use crate::{
     browse::branches::{
         actions::{delete_branch, fetch_branch, pull_branch, push_branch, switch_branch},
+        commit_history::get_parent_commits,
         get_local_branches,
     },
     home::repositories::{
@@ -41,7 +42,9 @@ fn main() {
             fetch_branch,
             pull_branch,
             push_branch,
-            switch_branch
+            switch_branch,
+            // browse:branches:commit_history
+            get_parent_commits
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
