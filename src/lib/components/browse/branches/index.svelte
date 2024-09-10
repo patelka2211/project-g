@@ -66,11 +66,11 @@
     {#each $branches as branch (branch.name)}
       {#if branch.isHead}
         <div class="branch-container sticky" bind:this={currentBranchElement}>
-          <Branch {...{ branch }} />
+          <Branch {branch} />
         </div>
       {:else}
         <div class="branch-container">
-          <Branch {...{ branch }} />
+          <Branch {branch} />
         </div>
       {/if}
     {/each}

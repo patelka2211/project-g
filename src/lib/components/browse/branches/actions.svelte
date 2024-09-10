@@ -179,10 +179,10 @@
     &.action_common,
     &.action_delete {
       &.action_disabled {
-        @apply opacity-50;
+        @apply text-foreground/50;
         @apply cursor-not-allowed;
         @apply shadow-none hover:shadow-none;
-        @apply hover:bg-background hover:text-foreground;
+        @apply hover:bg-background hover:text-foreground/50;
       }
     }
   }
