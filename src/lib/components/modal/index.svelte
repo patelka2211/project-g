@@ -1,4 +1,5 @@
 <script lang="ts">
+  import CloseIcon from "@/codicons/close-icon.svelte";
   import { zIndex } from "@/stores/z-index";
 
   export let showModal: boolean;
@@ -26,14 +27,14 @@
     on:click={() => (showModal = false)}
   >
     <div
-      class={`bg-background aspect-[960/660] border w-[480px] rounded-[12px] shadow-lg scale-100 transition-all p-2`}
+      class={`bg-background aspect-[960/660] border w-[366px] rounded-[12px] shadow-lg scale-100 transition-all p-2`}
       on:click|stopPropagation
     >
       <button
-        class="absolute right-2 top-2 aspect-square h-[28px] border rounded-[4px]"
+        class="absolute right-2 top-2 w-[28px] h-[28px] border rounded-[4px]"
         on:click={() => (showModal = false)}
       >
-        x
+        <CloseIcon class="aspect-square w-3/4 m-auto" />
       </button>
       <slot />
     </div>
