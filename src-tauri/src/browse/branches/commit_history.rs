@@ -5,7 +5,7 @@ mod utilities {
     use crate::error::Result;
 
     #[derive(Serialize)]
-    struct CommitterInfo {
+    struct AuthorInfo {
         name: Option<String>,
         email: Option<String>,
     }
@@ -14,7 +14,7 @@ mod utilities {
     pub struct CommitInfo {
         hash: String,
         msg: String,
-        committer: CommitterInfo,
+        author: AuthorInfo,
     }
 
     pub fn get_parent_commits(
@@ -23,20 +23,48 @@ mod utilities {
         no_of_commits: &u8,
     ) -> Result<Vec<CommitInfo>> {
         let repo = Repository::open(repo_path)?;
-        let mut object_id = Oid::from_str(&commit_hash)?;
 
-        let mut parents = Vec::new();
+        let mut commit_id = Oid::from_str(&commit_hash)?;
+
+        let mut parents_list = Vec::new();
+
+        // let mut commit = repo.find_commit(Oid::from_str(&commit_hash)?)?;
 
         for _index in 0u8..*no_of_commits {
-            let parent = repo.find_commit(object_id)?.parent(0)?;
+            let parent = match repo.find_commit(commit_id) {
+                Ok(commit) => {
+                    println!(
+                        "{}'s no. of parent(s) is {}.",
+                        commit.id(),
+                        commit.parent_count()
+                    );
+                    match commit.parents().nth(0) {
+                        Some(commit) => commit,
+                        None => {
+                            // println!("Commit {} not found.", commit_id);
+                            break;
+                        }
+                    }
+                }
+                Err(_) => {
+                    // println!("Commit {} not found.", commit_id);
+                    break;
+                }
+            };
+            // let parent = match commit.parents().nth(0) {
+            //     Some(parent) => parent,
+            //     None => break,
+            // };
 
             // commit hash
-            let hash = parent.id().to_string();
+            let parent_id = parent.id();
             // commit message
             let msg = parent.message().unwrap_or("").to_string();
 
-            // committer's signature
-            let signature = parent.committer();
+            println!("{} {}", msg, parent_id);
+
+            // author's signature
+            let signature = parent.author();
             let name = match signature.name() {
                 Some(name) => Some(name.to_string()),
                 None => None,
@@ -46,18 +74,20 @@ mod utilities {
                 None => None,
             };
 
-            parents.push(CommitInfo {
-                hash,
+            parents_list.push(CommitInfo {
+                hash: parent_id.to_string(),
                 msg,
-                committer: CommitterInfo { name, email },
+                author: AuthorInfo { name, email },
             });
-            object_id = match parent.parent(0) {
-                Ok(commit) => commit.id(),
-                Err(_) => break,
-            };
+
+            commit_id = parent_id;
+            // commit = match repo.find_commit(parent_id) {
+            //     Ok(commit) => commit,
+            //     Err(_) => break,
+            // };
         }
 
-        Ok(parents)
+        Ok(parents_list)
     }
 }
 

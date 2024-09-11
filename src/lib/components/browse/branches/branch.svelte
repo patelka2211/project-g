@@ -7,7 +7,7 @@
   export let branch: BranchInfo;
 </script>
 
-<div class="p-[6px] border rounded-[12px]">
+<div class="p-[6px] border rounded-[12px] h-full">
   <NameAndMenu {branch} />
   <Actions {branch} />
   <!-- start committing -->

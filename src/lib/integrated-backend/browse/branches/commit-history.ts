@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/tauri";
 
-export interface CommitterInfo {
+export interface AuthorInfo {
   name: string | null;
   email: string | null;
 }
@@ -8,7 +8,7 @@ export interface CommitterInfo {
 export interface CommitInfo {
   hash: string;
   msg: string;
-  committer: CommitterInfo;
+  author: AuthorInfo;
 }
 
 export async function getParentCommits(

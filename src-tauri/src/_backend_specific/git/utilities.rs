@@ -12,7 +12,6 @@ pub fn compare_branches(
     branch1: &String,
     branch2: &String,
 ) -> Result<BranchComparision> {
-    //
     let temp = format!("{}...{}", branch1, branch2);
     let output = run_command(
         repo_path,
