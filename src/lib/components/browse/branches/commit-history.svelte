@@ -16,7 +16,10 @@
       try {
         commitHistory = await getParentCommits(
           $repoPath,
-          branch.commitHash,
+          {
+            name: branch.name,
+            branch_type: "Local",
+          },
           20
         );
       } catch (error) {

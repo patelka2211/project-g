@@ -16,18 +16,15 @@ mod utilities {
 
 use serde::Deserialize;
 
-use crate::_backend_specific::git::{executor::run_command, utilities::compare_branches};
+use crate::_backend_specific::git::{
+    executor::run_command,
+    utilities::{compare_branches, SerializableBranchType},
+};
 
 #[derive(Deserialize)]
 pub struct RemoteBranchInfo<'a> {
     remote: &'a str,
     name: &'a str,
-}
-
-#[derive(Deserialize)]
-pub enum BranchType {
-    Local,
-    Remote,
 }
 
 #[tauri::command]
@@ -66,11 +63,11 @@ pub fn pull_branch(repo_path: String, remote_branch: RemoteBranchInfo) -> Result
 pub fn push_branch(
     repo_path: String,
     remote_branch: RemoteBranchInfo,
-    branch_type: BranchType,
+    branch_type: SerializableBranchType,
 ) -> Result<(), String> {
     let mut args = match branch_type {
-        BranchType::Local => vec!["--set-upstream"],
-        BranchType::Remote => vec![],
+        SerializableBranchType::Local => vec!["--set-upstream"],
+        SerializableBranchType::Remote => vec![],
     };
 
     args.push(&remote_branch.remote);

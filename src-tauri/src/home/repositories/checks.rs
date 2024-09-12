@@ -12,10 +12,7 @@ mod utilities {
 
         let remote_origin = repo.find_remote(&must_have_remote)?;
 
-        Ok(match remote_origin.url() {
-            Some(fetch_url) => Some(fetch_url.to_string()),
-            None => None,
-        })
+        Ok(remote_origin.url().map(|e| e.to_string()))
     }
 
     pub fn assert_origin_head(repo_path: String) -> Result<()> {

@@ -17,19 +17,19 @@ pub fn run_command(repo_path: &String, command: &str, args: &Vec<&str>) -> Resul
 
     if !status.success() {
         let stderr = String::from_utf8(stderr)?;
-        let stderr = match stderr.strip_suffix("\n") {
-            Some(stderr) => stderr.to_string(),
-            None => stderr,
-        };
+        let stderr = stderr
+            .strip_suffix("\n")
+            .map(|x| x.to_string())
+            .unwrap_or(stderr);
 
         return Err(stderr.into());
     }
 
     let stdout = String::from_utf8(stdout)?;
-    let stdout = match stdout.strip_suffix("\n") {
-        Some(stdout) => stdout.to_string(),
-        None => stdout,
-    };
+    let stdout = stdout
+        .strip_suffix("\n")
+        .map(|x| x.to_string())
+        .unwrap_or(stdout);
 
     Ok(stdout)
 }

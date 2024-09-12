@@ -12,8 +12,8 @@
     pullBranch,
     pushBranch,
     switchBranch,
-    type BranchType,
   } from "@/integrated-backend/browse/branches/actions";
+  import type { BranchType } from "@/integrated-backend/browse/branches/types";
   import { repoPath } from "@/stores/repo";
   import { toast } from "svelte-sonner";
 

@@ -5,7 +5,6 @@ export interface BranchInfo {
   upstream: string | null;
   isHead: boolean;
   commitTime: number;
-  commitHash: string;
 }
 
 export async function getLocalBranches(repoPath: String) {
