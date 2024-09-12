@@ -5,7 +5,6 @@
   import PushIcon from "@/codicons/push-icon.svelte";
   import TargetIcon from "@/codicons/target-icon.svelte";
   import TrashIcon from "@/codicons/trash-icon.svelte";
-  import type { BranchInfo } from "@/integrated-backend/browse/branches";
   import {
     deleteBranch,
     fetchBranch,
@@ -13,7 +12,10 @@
     pushBranch,
     switchBranch,
   } from "@/integrated-backend/browse/branches/actions";
-  import type { BranchType } from "@/integrated-backend/browse/branches/types";
+  import type {
+    BranchInfo,
+    BranchType,
+  } from "@/integrated-backend/browse/branches/types";
   import { repoPath } from "@/stores/repo";
   import { toast } from "svelte-sonner";
 

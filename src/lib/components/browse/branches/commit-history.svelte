@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { BranchInfo } from "@/integrated-backend/browse/branches";
-  import {
-    getParentCommits,
-    type CommitInfo,
-  } from "@/integrated-backend/browse/branches/commit-history";
+  import { getParentCommits } from "@/integrated-backend/browse/branches/commit-history";
+  import type {
+    BranchInfo,
+    CommitInfo,
+  } from "@/integrated-backend/browse/branches/types";
   import { repoPath } from "@/stores/repo";
   import { onMount } from "svelte";
 

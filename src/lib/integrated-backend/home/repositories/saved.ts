@@ -1,10 +1,5 @@
 import { invoke } from "@tauri-apps/api/tauri";
-
-export interface RepoInfo {
-  id: string;
-  name: string;
-  dir: string;
-}
+import type { RepoInfo } from "./types";
 
 export async function addRepo(dir: string, name: string) {
   try {

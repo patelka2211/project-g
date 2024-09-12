@@ -1,7 +1,7 @@
 <script lang="ts">
   import EllipsisIcon from "@/codicons/ellipsis-icon.svelte";
   import { Modal } from "@/components/modal";
-  import type { BranchInfo } from "@/integrated-backend/browse/branches";
+  import type { BranchInfo } from "@/integrated-backend/browse/branches/types";
 
   export let branch: BranchInfo;
 

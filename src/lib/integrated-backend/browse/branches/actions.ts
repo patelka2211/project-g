@@ -1,10 +1,5 @@
 import { invoke } from "@tauri-apps/api/tauri";
-import type { BranchType } from "./types";
-
-interface RemoteBranchInfo {
-  remote: string;
-  name: string;
-}
+import type { BranchType, RemoteBranchInfo } from "./types";
 
 export async function switchBranch(repoPath: string, branchName: string) {
   return await invoke<void>("switch_branch", { repoPath, branchName });

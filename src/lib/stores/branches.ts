@@ -1,7 +1,5 @@
-import {
-  getLocalBranches,
-  type BranchInfo,
-} from "@/integrated-backend/browse/branches";
+import { getLocalBranches } from "@/integrated-backend/browse/branches";
+import type { BranchInfo } from "@/integrated-backend/browse/branches/types";
 import { writable } from "svelte/store";
 
 export let branches = (() => {

@@ -5,8 +5,8 @@
     listRepos,
     removeRepo,
     reorderRepo,
-    type RepoInfo,
   } from "@/integrated-backend/home/repositories/saved";
+  import type { RepoInfo } from "@/integrated-backend/home/repositories/types";
   import { repoPath } from "@/stores/repo";
   import { onMount } from "svelte";
   import { toast } from "svelte-sonner";
