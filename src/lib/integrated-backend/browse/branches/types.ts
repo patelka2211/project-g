@@ -1,22 +1,24 @@
 export type BranchType = "Local" | "Remote";
 
-export type CommitType = "Merged" | "Normal" | "First";
-
 export interface RemoteBranchInfo {
   remote: string;
   name: string;
 }
 
-export interface AuthorInfo {
+interface AuthorInfo {
   name: string | null;
   email: string | null;
 }
 
-export interface CommitInfo {
+interface CommitInfo {
   hash: string;
   msg: string;
   author: AuthorInfo;
-  commitType: CommitType;
+}
+
+export interface ParentCommits {
+  list: Array<CommitInfo>;
+  endOfCommits: boolean;
 }
 
 export interface BranchData {

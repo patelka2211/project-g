@@ -2,19 +2,21 @@
   import { getParentCommits } from "@/integrated-backend/browse/branches/commit-history";
   import type {
     BranchInfo,
-    CommitInfo,
+    ParentCommits,
   } from "@/integrated-backend/browse/branches/types";
   import { repoPath } from "@/stores/repo";
   import { onMount } from "svelte";
 
   export let branch: BranchInfo;
 
-  let commitHistory: Array<CommitInfo> = [];
+  let commitHistory: ParentCommits["list"] = [];
+
+  let endOfCommits: ParentCommits["endOfCommits"] = false;
 
   onMount(async () => {
     if ($repoPath !== null) {
       try {
-        commitHistory = await getParentCommits(
+        const parentCommits = await getParentCommits(
           $repoPath,
           {
             name: branch.name,
@@ -22,6 +24,9 @@
           },
           20
         );
+
+        commitHistory = parentCommits.list;
+        endOfCommits = parentCommits.endOfCommits;
       } catch (error) {
         console.log(error);
       }
@@ -56,4 +61,5 @@
       </div>
     </div>
   {/each}
+  end of commits: {endOfCommits}
 </div>

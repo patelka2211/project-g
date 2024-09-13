@@ -1,5 +1,5 @@
 import { invoke } from "@tauri-apps/api/tauri";
-import type { BranchData, CommitInfo } from "./types";
+import type { BranchData, ParentCommits } from "./types";
 
 export async function getParentCommits(
   repoPath: string,
@@ -13,7 +13,7 @@ export async function getParentCommits(
     throw Error("Number of commits can be from 0 to 255 only.");
   }
 
-  return await invoke<Array<CommitInfo>>("get_parent_commits", {
+  return await invoke<ParentCommits>("get_parent_commits", {
     repoPath,
     branchData,
     noOfCommits,
