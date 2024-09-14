@@ -13,25 +13,33 @@
 
   let endOfCommits: ParentCommits["endOfCommits"] = false;
 
-  onMount(async () => {
+  async function loadParentCommits() {
     if ($repoPath !== null) {
       try {
-        const parentCommits = await getParentCommits(
+        let commitHash =
+          commitHistory.length == 0
+            ? branch.commitHash
+            : commitHistory[commitHistory.length - 1].hash;
+
+        let parentCommits = await getParentCommits(
           $repoPath,
-          {
-            name: branch.name,
-            branch_type: "Local",
-          },
-          20
+          commitHash,
+          20 + (commitHistory.length === 0 ? 0 : 1)
         );
 
-        commitHistory = parentCommits.list;
+        commitHistory = [
+          ...commitHistory,
+          ...parentCommits.list.slice(commitHistory.length === 0 ? 0 : 1),
+        ];
+
         endOfCommits = parentCommits.endOfCommits;
       } catch (error) {
         console.log(error);
       }
     }
-  });
+  }
+
+  onMount(loadParentCommits);
 </script>
 
 <div class="w-full">
@@ -61,5 +69,12 @@
       </div>
     </div>
   {/each}
-  end of commits: {endOfCommits}
+
+  {#if endOfCommits}
+    <div>end of commits</div>
+  {:else if commitHistory.length === 0}
+    <div>no commits</div>
+  {:else}
+    <button on:click={loadParentCommits}>load commits</button>
+  {/if}
 </div>

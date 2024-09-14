@@ -21,14 +21,10 @@ export interface ParentCommits {
   endOfCommits: boolean;
 }
 
-export interface BranchData {
-  name: String;
-  branch_type: BranchType;
-}
-
 export interface BranchInfo {
   name: string;
   upstream: string | null;
   isHead: boolean;
   commitTime: number;
+  commitHash: string;
 }

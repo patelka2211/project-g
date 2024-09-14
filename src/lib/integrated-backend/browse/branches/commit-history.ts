@@ -1,9 +1,9 @@
 import { invoke } from "@tauri-apps/api/tauri";
-import type { BranchData, ParentCommits } from "./types";
+import type { ParentCommits } from "./types";
 
 export async function getParentCommits(
   repoPath: string,
-  branchData: BranchData,
+  commitHash: string,
   /**
    * type: `u8`
    */
@@ -15,7 +15,7 @@ export async function getParentCommits(
 
   return await invoke<ParentCommits>("get_parent_commits", {
     repoPath,
-    branchData,
+    commitHash,
     noOfCommits,
   });
 }
