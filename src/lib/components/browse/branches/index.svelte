@@ -86,16 +86,19 @@
   {/if}
 </div>
 
-<style lang="scss">
+<style lang="postcss">
   .branches-container {
     -ms-overflow-style: none;
     scrollbar-width: none;
     &::-webkit-scrollbar {
       display: none;
     }
+  }
 
-    .branch-container {
-      @apply h-full bg-background p-[14px] border-x-[0.5px];
-    }
+  .branch-container {
+    @apply h-full max-w-[398px];
+    @apply bg-background;
+    @apply p-[14px];
+    @apply border-x-[0.5px];
   }
 </style>

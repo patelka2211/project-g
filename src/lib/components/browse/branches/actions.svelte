@@ -97,7 +97,7 @@
   }
 </script>
 
-<div class="flex items-center justify-between gap-[6px]">
+<div class="w-full flex items-center justify-between gap-[6px]">
   <!-- target branch button -->
   <button
     class={`action-button ${branch.isHead ? "bg-accent-foreground text-accent" : "action_target"}`}

@@ -14,7 +14,7 @@
   {branch.upstream}
 </Modal>
 
-<div class="h-[28px] flex items-center justify-between mb-[6px]">
+<div class="w-full h-[28px] flex items-center justify-between">
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div

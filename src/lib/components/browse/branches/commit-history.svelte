@@ -16,20 +16,21 @@
   async function loadParentCommits() {
     if ($repoPath !== null) {
       try {
-        let commitHash =
-          commitHistory.length == 0
-            ? branch.commitHash
-            : commitHistory[commitHistory.length - 1].hash;
+        const commitHash =
+            commitHistory.length == 0
+              ? branch.commitHash
+              : commitHistory[commitHistory.length - 1].hash,
+          skippedCommit = commitHistory.length === 0 ? 0 : 1;
 
         let parentCommits = await getParentCommits(
           $repoPath,
           commitHash,
-          20 + (commitHistory.length === 0 ? 0 : 1)
+          20 + skippedCommit
         );
 
         commitHistory = [
           ...commitHistory,
-          ...parentCommits.list.slice(commitHistory.length === 0 ? 0 : 1),
+          ...parentCommits.list.slice(skippedCommit),
         ];
 
         endOfCommits = parentCommits.endOfCommits;
@@ -42,11 +43,11 @@
   onMount(loadParentCommits);
 </script>
 
-<div class="w-full">
+<div class="w-full flex flex-col items-center h-full overflow-x-auto">
   {#each commitHistory as commit (`${commit.hash}-${branch.name}`)}
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div
-      class="flex flex-col bg-accent border p-[6px]"
+      class="w-full flex flex-col p-[6px] border-b last:border-b-0"
       on:contextmenu|preventDefault={() => {
         console.log(commit);
       }}
@@ -70,11 +71,16 @@
     </div>
   {/each}
 
-  {#if endOfCommits}
-    <div>end of commits</div>
+  {#if !endOfCommits}
+    <div class="w-full p-[6px]">
+      <button
+        class="w-full border rounded-[6px] hover:bg-accent hover:text-accent-foreground text-md"
+        on:click={loadParentCommits}
+      >
+        load more commits
+      </button>
+    </div>
   {:else if commitHistory.length === 0}
     <div>no commits</div>
-  {:else}
-    <button on:click={loadParentCommits}>load commits</button>
   {/if}
 </div>
