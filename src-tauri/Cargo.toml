@@ -18,9 +18,9 @@ tauri-build = { version = "1.5.3", features = [] }
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 tauri = { version = "1.7.0", features = [ "window-unminimize", "window-unmaximize", "window-set-resizable", "window-minimize", "window-maximize", "window-start-dragging", "path-all", "dialog-open"] }
-git2 = "0.19.0"
+git2 = { version = "0.19.0", default-features = false }
 uuid = "1.10.0"
-rusqlite = "0.32.1"
+rusqlite = { version = "0.32.1", features = ["bundled"] }
 tauri-plugin-fs-watch = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 
 [features]
