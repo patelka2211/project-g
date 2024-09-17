@@ -100,7 +100,7 @@
 <div class="w-full flex items-center justify-between gap-[6px]">
   <!-- target branch button -->
   <button
-    class={`action-button ${branch.isHead ? "bg-accent-foreground text-accent" : "action_target"}`}
+    class={`action-button ${branch.isHead ? "bg-accent-foreground text-accent" : "action_common"}`}
     title={`${branch.isHead ? "Already on" : "Switch to"} ${branch.name}`}
     on:click={switchOnClick}
   >
@@ -165,10 +165,6 @@
     @apply border rounded-[6px];
     @apply flex items-center gap-[6px];
     @apply shadow-sm hover:shadow-inner;
-
-    &.action_target {
-      @apply hover:bg-accent hover:text-accent-foreground;
-    }
 
     &.action_common {
       @apply hover:bg-accent hover:text-accent-foreground;
