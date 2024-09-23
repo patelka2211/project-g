@@ -46,7 +46,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "in.kpverse.project-g",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
