@@ -26,6 +26,9 @@
         "unmaximize": true,
         "unminimize": true,
         "setResizable": true
+      },
+      "os": {
+        "all": true
       }
     },
     "bundle": {

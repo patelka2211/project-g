@@ -1,24 +1,16 @@
 <script lang="ts">
+  import RootLayoutMacOS from "@/components/root-layout.macos.svelte";
+  import RootLayout from "@/components/root-layout.svelte";
   import Sonner from "@/shadcn-svelte-components/ui/sonner/sonner.svelte";
-  import { appWindow } from "@tauri-apps/api/window";
+  import { type as getOS } from "@tauri-apps/api/os";
   import { ModeWatcher } from "mode-watcher";
-  import { onDestroy, onMount } from "svelte";
+  import { onMount } from "svelte";
   import "../app.css";
 
-  let isFullscreen = false;
-  let unlisten: Awaited<ReturnType<typeof appWindow.onResized>>;
-
-  async function checkFullscreen() {
-    isFullscreen = await appWindow.isFullscreen();
-  }
+  let isMacOS = false;
 
   onMount(async () => {
-    await checkFullscreen();
-    unlisten = await appWindow.onResized(checkFullscreen);
-  });
-
-  onDestroy(() => {
-    unlisten();
+    isMacOS = (await getOS()) === "Darwin";
   });
 </script>
 
@@ -26,15 +18,12 @@
 
 <Sonner richColors expand />
 
-<!-- Title bar -->
-{#if !isFullscreen}
-  <div
-    data-tauri-drag-region
-    class="fixed z-[10000] top-0 left-0 w-dvw h-[28px] border-b border-separate bg-background select-none"
-  ></div>
-  <div class="h-[28px]"></div>
+{#if isMacOS}
+  <RootLayoutMacOS>
+    <slot></slot>
+  </RootLayoutMacOS>
+{:else}
+  <RootLayout>
+    <slot></slot>
+  </RootLayout>
 {/if}
-
-<div class={`w-dvw ${isFullscreen ? "h-dvh" : "h-[calc(100dvh-28px)]"}`}>
-  <slot></slot>
-</div>
