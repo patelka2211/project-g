@@ -7,7 +7,7 @@
     "distDir": "../build"
   },
   "package": {
-    "productName": "project-g",
+    "productName": "Project G",
     "version": "0.1.0"
   },
   "tauri": {
@@ -78,7 +78,7 @@
         "minWidth": 960,
         "minHeight": 660,
         "resizable": true,
-        "title": "project-g",
+        "title": "Project G",
         "titleBarStyle": "Overlay",
         "hiddenTitle": true
       }
