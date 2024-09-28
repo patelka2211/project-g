@@ -8,8 +8,12 @@ updates:
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
+      time: "18:30" # Time in UTC corresponding to 00:00 IST
   - package-ecosystem: "cargo" # See documentation for possible values
     directory: "/src-tauri/" # Location of package manifests
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
+      time: "18:30" # Time in UTC corresponding to 00:00 IST
