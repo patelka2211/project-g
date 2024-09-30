@@ -9,11 +9,11 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
-      day: "monday"
-      time: "18:30" # Time in UTC corresponding to 00:00 IST
+      day: "sunday"
+      time: "18:30"
   - package-ecosystem: "cargo" # See documentation for possible values
     directory: "/src-tauri/" # Location of package manifests
     schedule:
       interval: "weekly"
-      day: "monday"
-      time: "18:30" # Time in UTC corresponding to 00:00 IST
+      day: "sunday"
+      time: "18:30"
