@@ -1,8 +1,8 @@
-import { invoke } from "@tauri-apps/api/tauri";
-import type { BranchInfo } from "./types";
+import { invoke } from '@tauri-apps/api/core';
+import type { BranchInfo } from './types';
 
-export async function getLocalBranches(repoPath: String) {
-  return await invoke<Array<BranchInfo>>("get_local_branches", {
-    repoPath,
-  });
+export async function getLocalBranches(repoPath: string) {
+	return await invoke<Array<BranchInfo>>('get_local_branches', {
+		repoPath
+	});
 }

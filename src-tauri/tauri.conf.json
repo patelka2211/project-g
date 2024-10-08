@@ -1,87 +1,46 @@
 {
-  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
-  "build": {
-    "beforeBuildCommand": "npm run build",
-    "beforeDevCommand": "npm run dev",
-    "devPath": "http://localhost:5173",
-    "distDir": "../build"
-  },
-  "package": {
+    "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
     "productName": "Project G",
-    "version": "0.1.0"
-  },
-  "tauri": {
-    "allowlist": {
-      "all": false,
-      "path": {
-        "all": true
-      },
-      "dialog": {
-        "open": true
-      },
-      "window": {
-        "startDragging": true,
-        "maximize": true,
-        "minimize": true,
-        "unmaximize": true,
-        "unminimize": true,
-        "setResizable": true
-      },
-      "os": {
-        "all": true
-      }
+    "version": "0.1.0",
+    "identifier": "in.kpverse.project-g",
+    "build": {
+        "frontendDist": "../build",
+        "devUrl": "http://localhost:5173",
+        "beforeDevCommand": "npm run dev",
+        "beforeBuildCommand": "npm run build"
+    },
+    "app": {
+        "windows": [
+            {
+                "title": "Project G",
+                "width": 960,
+                "height": 660,
+                "minWidth": 960,
+                "minHeight": 660,
+                "resizable": true,
+                "fullscreen": false,
+                "titleBarStyle": "Overlay",
+                "hiddenTitle": true
+            }
+        ],
+        "security": {
+            "csp": null
+        }
     },
     "bundle": {
-      "active": true,
-      "category": "DeveloperTool",
-      "copyright": "",
-      "deb": {
-        "depends": []
-      },
-      "externalBin": [],
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ],
-      "identifier": "in.kpverse.project-g",
-      "longDescription": "",
-      "macOS": {
-        "entitlements": null,
-        "exceptionDomain": "",
-        "frameworks": [],
-        "providerShortName": null,
-        "signingIdentity": null
-      },
-      "resources": [],
-      "shortDescription": "",
-      "targets": "all",
-      "windows": {
-        "certificateThumbprint": null,
-        "digestAlgorithm": "sha256",
-        "timestampUrl": ""
-      }
+        "active": true,
+        "targets": "all",
+        "icon": [
+            "icons/32x32.png",
+            "icons/128x128.png",
+            "icons/128x128@2x.png",
+            "icons/icon.icns",
+            "icons/icon.ico"
+        ]
     },
-    "security": {
-      "csp": null
-    },
-    "updater": {
-      "active": false
-    },
-    "windows": [
-      {
-        "fullscreen": false,
-        "width": 960,
-        "height": 660,
-        "minWidth": 960,
-        "minHeight": 660,
-        "resizable": true,
-        "title": "Project G",
-        "titleBarStyle": "Overlay",
-        "hiddenTitle": true
-      }
-    ]
-  }
+    "plugins": {
+        "fs": {
+            "requireLiteralLeadingDot": false
+        }
+    }
 }
