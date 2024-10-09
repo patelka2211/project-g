@@ -45,10 +45,11 @@
 		"@tauri-apps/plugin-dialog": "^2.0.0",
 		"@tauri-apps/plugin-fs": "^2.0.0",
 		"@tauri-apps/plugin-os": "^2.0.0",
-		"bits-ui": "^0.21.13",
+		"bits-ui": "^0.21.16",
 		"clsx": "^2.1.1",
 		"mode-watcher": "^0.4.1",
 		"run-script-os": "^1.1.6",
+		"svelte-radix": "^1.1.1",
 		"svelte-sonner": "^0.3.27",
 		"tailwind-merge": "^2.5.2",
 		"tailwind-variants": "^0.2.1"
