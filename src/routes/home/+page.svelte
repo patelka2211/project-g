@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { SavedRepos } from '@/components/home/saved-repos';
 	import AKPVERSEInitiative from '@/assets/a-kpverse-initiative.svelte';
+	import { SavedRepos } from '@/components/home/saved-repos';
 </script>
 
 <div class="min-h-full flex flex-col items-center justify-around">
@@ -11,14 +11,40 @@
 	</div>
 </div>
 
-<div class="absolute bottom-[24px] h-[10px] left-[calc(50%-5*24.33px)]">
+<div class="absolute overflow-hidden bottom-[24px] h-[10px] left-[calc(50%-5*24.33px)]">
 	<AKPVERSEInitiative class="h-full" />
+	<div class="shine-effect"></div>
 </div>
 
 <style lang="scss">
 	* {
 		&:hover {
 			cursor: default;
+		}
+	}
+
+	.shine-effect {
+		background: linear-gradient(
+			90deg,
+			hsl(var(--background) / 0),
+			hsl(var(--background) / 1),
+			hsl(var(--background) / 0)
+		);
+		animation: shine 2.5s;
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+	}
+
+	@keyframes shine {
+		0% {
+			left: -100%;
+		}
+		100% {
+			left: 100%;
 		}
 	}
 </style>

@@ -3,7 +3,7 @@
 	<path
 		d="M136.434 100H110.271L98.2558 78.1008H34.8837L23.2558 100H0L56.5891 0H79.0698L136.434 100ZM88.5659 60.0775L67.0543 19.3798L44.7674 60.0775H88.5659Z"
 		fill="currentColor"
-		class="opacity-75"
+		class="opacity-[0.56]"
 	/>
 
 	<!-- KPVERSE -->
@@ -45,47 +45,47 @@
 
 	<!-- INITIATIVE -->
 	<!-- I -->
-	<path d="M1376.32 100H1353.06V0H1376.32V100Z" fill="currentColor" class="opacity-75" />
+	<path d="M1376.32 100H1353.06V0H1376.32V100Z" fill="currentColor" class="opacity-[0.56]" />
 	<!-- N -->
 	<path
 		d="M1544.88 100H1528.99L1455.54 38.1783C1452.44 35.5943 1449.66 32.8811 1447.21 30.0388C1447.86 36.4987 1448.18 41.6021 1448.18 45.3488V100H1427.25V0H1443.14L1513.49 58.9147C1518.53 63.1783 1522.34 66.7959 1524.92 69.7674C1524.28 60.4651 1523.95 54.7158 1523.95 52.5194V0H1544.88V100Z"
 		fill="currentColor"
-		class="opacity-75"
+		class="opacity-[0.56]"
 	/>
 	<!-- I -->
-	<path d="M1619.14 100H1595.88V0H1619.14V100Z" fill="currentColor" class="opacity-75" />
+	<path d="M1619.14 100H1595.88V0H1619.14V100Z" fill="currentColor" class="opacity-[0.56]" />
 	<!-- T -->
 	<path
 		d="M1762.89 17.8295H1716.77V100H1693.51V17.8295H1647.58V0H1762.89V17.8295Z"
 		fill="currentColor"
-		class="opacity-75"
+		class="opacity-[0.56]"
 	/>
 	<!-- I -->
-	<path d="M1814.64 100H1791.38V0H1814.64V100Z" fill="currentColor" class="opacity-75" />
+	<path d="M1814.64 100H1791.38V0H1814.64V100Z" fill="currentColor" class="opacity-[0.56]" />
 	<!-- A -->
 	<path
 		d="M1983.01 100H1956.84L1944.83 78.1008H1881.46L1869.83 100H1846.57L1903.16 0H1925.64L1983.01 100ZM1935.14 60.0775L1913.63 19.3798L1891.34 60.0775H1935.14Z"
 		fill="currentColor"
-		class="opacity-75"
+		class="opacity-[0.56]"
 	/>
 	<!-- T -->
 	<path
 		d="M2094.47 17.8295H2048.35V100H2025.09V17.8295H1979.16V0H2094.47V17.8295Z"
 		fill="currentColor"
-		class="opacity-75"
+		class="opacity-[0.56]"
 	/>
 	<!-- I -->
-	<path d="M2146.21 100H2122.96V0H2146.21V100Z" fill="currentColor" class="opacity-75" />
+	<path d="M2146.21 100H2122.96V0H2146.21V100Z" fill="currentColor" class="opacity-[0.56]" />
 	<!-- V -->
 	<path
 		d="M2302.18 0L2247.14 100H2231.06L2173.31 0H2199.86L2240.36 72.2868L2278.93 0H2302.18Z"
 		fill="currentColor"
-		class="opacity-75"
+		class="opacity-[0.56]"
 	/>
 	<!-- E -->
 	<path
 		d="M2432.54 100H2329.25V0H2431.57V17.0543H2352.5V39.3411H2398.63V56.3953H2352.5V81.2016H2432.54V100Z"
 		fill="currentColor"
-		class="opacity-75"
+		class="opacity-[0.56]"
 	/>
 </svg>
