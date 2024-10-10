@@ -1,5 +1,6 @@
 pub mod actions;
 pub mod commit_history;
+pub mod name_and_menu;
 
 mod utilities {
     use git2::{BranchType, Repository};

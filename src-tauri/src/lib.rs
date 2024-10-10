@@ -9,6 +9,7 @@ use crate::{
         actions::{delete_branch, fetch_branch, pull_branch, push_branch, switch_branch},
         commit_history::get_parent_commits,
         get_local_branches,
+        name_and_menu::create_branch,
     },
     home::repositories::{
         checks::{assert_dot_git_folder, assert_origin_head, get_origin_fetch_url},
@@ -55,6 +56,8 @@ pub fn run() {
             switch_branch,
             // browse:branches:commit_history
             get_parent_commits,
+            // browse:branches:name_and_menu
+            create_branch,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

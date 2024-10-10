@@ -2,12 +2,25 @@
 	import AddIcon from '@/codicons/add-icon.svelte';
 	import EllipsisIcon from '@/codicons/ellipsis-icon.svelte';
 	import { Modal } from '@/components/modal';
+	import { createBranch } from '@/integrated-backend/browse/branches/name-and-menu';
 	import type { BranchInfo } from '@/integrated-backend/browse/branches/types';
 	import * as DropdownMenu from '@/shadcn-svelte-components/ui/dropdown-menu';
+	import { repoPath } from '@/stores/repo';
 
 	export let branch: BranchInfo;
 
 	let showBranchModal = false;
+
+	async function createBranchUtility() {
+		if ($repoPath) {
+			try {
+				let newBranch = await createBranch($repoPath, branch.commitHash);
+				console.log(`Branch "${newBranch}" created.`);
+			} catch (error) {
+				console.log(error);
+			}
+		}
+	}
 </script>
 
 <Modal bind:showModal={showBranchModal}>
@@ -34,9 +47,7 @@
 		<DropdownMenu.Content>
 			<DropdownMenu.Item
 				class="h-[28px] flex items-center cursor-pointer"
-				on:click={() => {
-					console.log(`Create new branch from branch "${branch.name}"`);
-				}}
+				on:click={createBranchUtility}
 			>
 				<AddIcon class="h-3/4 aspect-square mr-[6px]" />
 				<span>Create new branch</span>
