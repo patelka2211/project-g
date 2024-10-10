@@ -1,2 +1,2 @@
-import Modal from "./index.svelte";
+import Modal from './index.svelte';
 export { Modal };

@@ -1,2 +1,2 @@
-import Sidebar from "./index.svelte";
+import Sidebar from './index.svelte';
 export { Sidebar };

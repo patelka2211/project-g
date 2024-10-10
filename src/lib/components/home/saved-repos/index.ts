@@ -1,2 +1,2 @@
-import SavedRepos from "./index.svelte";
+import SavedRepos from './index.svelte';
 export { SavedRepos };

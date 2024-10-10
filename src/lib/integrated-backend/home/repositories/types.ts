@@ -1,5 +1,5 @@
 export interface RepoInfo {
-  id: string;
-  name: string;
-  dir: string;
+	id: string;
+	name: string;
+	dir: string;
 }

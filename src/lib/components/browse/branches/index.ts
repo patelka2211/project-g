@@ -1,2 +1,2 @@
-import Branches from "./index.svelte";
+import Branches from './index.svelte';
 export { Branches };

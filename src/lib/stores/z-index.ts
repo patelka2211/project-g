@@ -1,31 +1,31 @@
-import { get, writable } from "svelte/store";
+import { get, writable } from 'svelte/store';
 
 export const zIndex = (() => {
-  const MINIMUM_VALUE = 100;
+	const MINIMUM_VALUE = 100;
 
-  let store = writable(MINIMUM_VALUE);
+	const store = writable(MINIMUM_VALUE);
 
-  function getNext() {
-    let zIndex = get(store);
+	function getNext() {
+		const zIndex = get(store);
 
-    store.set(zIndex + 1);
+		store.set(zIndex + 1);
 
-    return zIndex;
-  }
+		return zIndex;
+	}
 
-  function decrease() {
-    let zIndex = get(store);
+	function decrease() {
+		const zIndex = get(store);
 
-    if (zIndex - 1 < MINIMUM_VALUE) return zIndex;
+		if (zIndex - 1 < MINIMUM_VALUE) return zIndex;
 
-    store.set(zIndex - 1);
+		store.set(zIndex - 1);
 
-    return zIndex - 1;
-  }
+		return zIndex - 1;
+	}
 
-  return {
-    ...store,
-    getNext,
-    decrease,
-  };
+	return {
+		...store,
+		getNext,
+		decrease
+	};
 })();
