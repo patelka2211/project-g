@@ -25,12 +25,12 @@
 
 	.shine-effect {
 		background: linear-gradient(
-			90deg,
+			130deg,
 			hsl(var(--background) / 0),
 			hsl(var(--background) / 1),
 			hsl(var(--background) / 0)
 		);
-		animation: shine 2.5s;
+		animation: shine 3s;
 		position: absolute;
 		top: 0;
 		left: -100%;

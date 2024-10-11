@@ -1,8 +1,12 @@
 <script lang="ts">
+	import AddIcon from '@/codicons/add-icon.svelte';
+	import ArrowSwapIcon from '@/codicons/arrow-swap-icon.svelte';
 	import CherryPickIcon from '@/codicons/cherry-pick-icon.svelte';
 	import EllipsisIcon from '@/codicons/ellipsis-icon.svelte';
 	import RevertIcon from '@/codicons/revert-icon.svelte';
+	import { switchBranch } from '@/integrated-backend/browse/branches/actions';
 	import { getParentCommits } from '@/integrated-backend/browse/branches/commit-history';
+	import { createBranch } from '@/integrated-backend/browse/branches/name-and-menu';
 	import type { BranchInfo, ParentCommits } from '@/integrated-backend/browse/branches/types';
 	import * as DropdownMenu from '@/shadcn-svelte-components/ui/dropdown-menu';
 	import { repoPath } from '@/stores/repo';
@@ -51,9 +55,23 @@
 						</div>
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Content align="start">
+						<!-- new branch from a commit -->
+						<DropdownMenu.Item
+							class="cursor-pointer"
+							on:click={async () => {
+								await createBranch(commit.hash);
+							}}
+						>
+							<div class="flex items-center">
+								<AddIcon class="aspect-square h-[16px]" />
+								<span class="ml-[4px]">New branch</span>
+							</div>
+						</DropdownMenu.Item>
+
 						{#if branch.isHead}
 							<!-- cherry-pick -->
 							<DropdownMenu.Item
+								class="cursor-pointer"
 								on:click={() => {
 									console.log('cherry-pick ', commit.hash);
 								}}
@@ -66,6 +84,7 @@
 
 							<!-- revert -->
 							<DropdownMenu.Item
+								class="cursor-pointer"
 								on:click={() => {
 									console.log('revert ', commit.hash);
 								}}
@@ -76,7 +95,20 @@
 								</div>
 							</DropdownMenu.Item>
 						{:else}
-							<div>switch to this branch for more actions</div>
+							<DropdownMenu.Separator></DropdownMenu.Separator>
+							<DropdownMenu.Item
+								class="cursor-pointer"
+								on:click={() => {
+									switchBranch(branch.name);
+								}}
+							>
+								<div class="flex items-center">
+									<ArrowSwapIcon class="aspect-square h-[16px]" />
+									<span class="ml-[4px]">
+										switch to "{branch.name}"
+									</span>
+								</div>
+							</DropdownMenu.Item>
 						{/if}
 					</DropdownMenu.Content>
 				</DropdownMenu.Root>

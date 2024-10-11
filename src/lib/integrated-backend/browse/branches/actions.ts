@@ -1,8 +1,18 @@
+import { repoPath as repoPathStore } from '@/stores/repo';
 import { invoke } from '@tauri-apps/api/core';
+import { toast } from 'svelte-sonner';
+import { get } from 'svelte/store';
 import type { BranchType, RemoteBranchInfo } from './types';
 
-export async function switchBranch(repoPath: string, branchName: string) {
-	return await invoke<void>('switch_branch', { repoPath, branchName });
+export async function switchBranch(branchName: string) {
+	const repoPath = get(repoPathStore);
+	if (repoPath !== null) {
+		try {
+			await invoke<void>('switch_branch', { repoPath, branchName });
+		} catch (error) {
+			if (typeof error === 'string') toast.error(error);
+		}
+	}
 }
 
 export async function fetchBranch(repoPath: string, remoteBranch: RemoteBranchInfo) {

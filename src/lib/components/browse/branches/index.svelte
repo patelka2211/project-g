@@ -1,8 +1,9 @@
 <script lang="ts">
+	import { createBranch } from '@/integrated-backend/browse/branches/name-and-menu';
 	import { Button } from '@/shadcn-svelte-components/ui/button';
 	import { branches } from '@/stores/branches';
 	import { repoPath } from '@/stores/repo';
-	import { watch, type UnwatchFn } from '@tauri-apps/plugin-fs';
+	import { watchImmediate, type UnwatchFn } from '@tauri-apps/plugin-fs';
 	import { onDestroy, onMount } from 'svelte';
 	import Branch from './branch.svelte';
 
@@ -34,7 +35,7 @@
 
 		if ($repoPath) {
 			branches.reload($repoPath);
-			unwatch = await watch(
+			unwatch = await watchImmediate(
 				[
 					`${$repoPath}/.git/refs/heads`,
 					`${$repoPath}/.git/refs/remotes`,
@@ -44,7 +45,7 @@
 					branches.reload($repoPath);
 					handleScroll();
 				},
-				{ recursive: true, delayMs: 100 }
+				{ recursive: true }
 			);
 		}
 	});
@@ -54,7 +55,10 @@
 		branchesContainerElement.removeEventListener('resize', handleScroll);
 		currentBranchElement = null;
 
-		if (unwatch) unwatch();
+		if (unwatch !== undefined) {
+			unwatch();
+			unwatch = undefined;
+		}
 	});
 </script>
 
@@ -80,7 +84,13 @@
 		<div class="h-full min-w-[calc(100dvw-68px)] flex">
 			<div class="flex flex-col items-center m-auto gap-2">
 				No branches!
-				<Button>Create new branch</Button>
+				<Button
+					on:click={async () => {
+						createBranch(null);
+					}}
+				>
+					Create new branch
+				</Button>
 			</div>
 		</div>
 	{/if}

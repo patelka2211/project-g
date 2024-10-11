@@ -20,14 +20,7 @@
 
 	async function switchOnClick() {
 		if (branch.isHead === true) return;
-
-		if ($repoPath) {
-			try {
-				await switchBranch($repoPath, branch.name);
-			} catch (error) {
-				if (typeof error === 'string') toast.error(error);
-			}
-		}
+		await switchBranch(branch.name);
 	}
 
 	async function fetchOnClick() {

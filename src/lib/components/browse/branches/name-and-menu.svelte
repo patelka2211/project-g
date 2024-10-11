@@ -5,23 +5,10 @@
 	import { createBranch } from '@/integrated-backend/browse/branches/name-and-menu';
 	import type { BranchInfo } from '@/integrated-backend/browse/branches/types';
 	import * as DropdownMenu from '@/shadcn-svelte-components/ui/dropdown-menu';
-	import { repoPath } from '@/stores/repo';
-	import { toast } from 'svelte-sonner';
 
 	export let branch: BranchInfo;
 
 	let showBranchModal = false;
-
-	async function createBranchUtility() {
-		if ($repoPath) {
-			try {
-				let newBranch = await createBranch($repoPath, branch.commitHash);
-				toast.success(`Branch "${newBranch}" created.`);
-			} catch (error) {
-				toast.error(error as string);
-			}
-		}
-	}
 </script>
 
 <Modal bind:showModal={showBranchModal}>
@@ -48,7 +35,9 @@
 		<DropdownMenu.Content>
 			<DropdownMenu.Item
 				class="h-[28px] flex items-center cursor-pointer"
-				on:click={createBranchUtility}
+				on:click={async () => {
+					await createBranch(branch.commitHash);
+				}}
 			>
 				<AddIcon class="h-3/4 aspect-square mr-[6px]" />
 				<span>Create new branch</span>

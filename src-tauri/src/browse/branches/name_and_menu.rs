@@ -19,9 +19,12 @@ mod utilities {
         )
     }
 
-    pub fn create_branch(repo_path: String, start_point: String) -> Result<String> {
+    pub fn create_branch(repo_path: String, start_point: Option<String>) -> Result<String> {
         let repo = Repository::open(&repo_path)?;
-        let commit = repo.find_commit(Oid::from_str(&start_point)?)?;
+        let commit = match start_point {
+            Some(start_point) => repo.find_commit(Oid::from_str(&start_point)?)?,
+            None => repo.head()?.peel_to_commit()?,
+        };
 
         let new_branch = generate_branch_name();
 
@@ -32,7 +35,7 @@ mod utilities {
 }
 
 #[tauri::command]
-pub fn create_branch(repo_path: String, start_point: String) -> Result<String, String> {
+pub fn create_branch(repo_path: String, start_point: Option<String>) -> Result<String, String> {
     let new_branch = match utilities::create_branch(repo_path, start_point) {
         Ok(new_branch) => new_branch,
         Err(error) => return Err(error.to_string()),
