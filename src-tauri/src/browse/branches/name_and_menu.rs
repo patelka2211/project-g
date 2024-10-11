@@ -1,17 +1,29 @@
 mod utilities {
 
-    use git2::{BranchType::Local, Oid, Repository};
+    use chrono::{Datelike, Timelike, Utc};
+    use git2::{Oid, Repository};
 
     use crate::error::Result;
 
+    fn generate_branch_name() -> String {
+        let now = Utc::now();
+
+        format!(
+            "branch-{:04}-{:02}-{:02}-{:02}-{:02}-{:02}",
+            now.year(),
+            now.month(),
+            now.day(),
+            now.hour(),
+            now.minute(),
+            now.second()
+        )
+    }
+
     pub fn create_branch(repo_path: String, start_point: String) -> Result<String> {
         let repo = Repository::open(&repo_path)?;
-
-        let count = repo.branches(Some(Local))?.count();
-
         let commit = repo.find_commit(Oid::from_str(&start_point)?)?;
 
-        let new_branch = format!("untitled-branch-{}", count + 1);
+        let new_branch = generate_branch_name();
 
         repo.branch(&new_branch, &commit, false)?;
 

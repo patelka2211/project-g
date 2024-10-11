@@ -6,6 +6,7 @@
 	import type { BranchInfo } from '@/integrated-backend/browse/branches/types';
 	import * as DropdownMenu from '@/shadcn-svelte-components/ui/dropdown-menu';
 	import { repoPath } from '@/stores/repo';
+	import { toast } from 'svelte-sonner';
 
 	export let branch: BranchInfo;
 
@@ -15,9 +16,9 @@
 		if ($repoPath) {
 			try {
 				let newBranch = await createBranch($repoPath, branch.commitHash);
-				console.log(`Branch "${newBranch}" created.`);
+				toast.success(`Branch "${newBranch}" created.`);
 			} catch (error) {
-				console.log(error);
+				toast.error(error as string);
 			}
 		}
 	}
