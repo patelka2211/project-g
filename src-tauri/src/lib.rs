@@ -7,7 +7,7 @@ mod init;
 use crate::{
     browse::branches::{
         actions::{delete_branch, fetch_branch, pull_branch, push_branch, switch_branch},
-        commit_history::get_parent_commits,
+        commit_history::{cherry_pick_commit, get_parent_commits, revert_commit},
         get_local_branches,
         name_and_menu::create_branch,
     },
@@ -55,7 +55,9 @@ pub fn run() {
             push_branch,
             switch_branch,
             // browse:branches:commit_history
+            cherry_pick_commit,
             get_parent_commits,
+            revert_commit,
             // browse:branches:name_and_menu
             create_branch,
         ])

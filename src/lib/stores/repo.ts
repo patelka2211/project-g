@@ -1,5 +1,5 @@
 import { goto } from '$app/navigation';
-import { writable } from 'svelte/store';
+import { get as _get, writable } from 'svelte/store';
 
 export const repoPath = (() => {
 	const store = writable(window.sessionStorage.getItem('current-repo'));
@@ -19,10 +19,15 @@ export const repoPath = (() => {
 		store.set(null);
 	}
 
+	function get() {
+		return _get(store);
+	}
+
 	return {
 		...store,
 		set,
 		setAndBrowse,
-		clear
+		clear,
+		get
 	};
 })();

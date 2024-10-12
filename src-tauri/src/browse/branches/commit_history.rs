@@ -1,3 +1,5 @@
+use crate::_backend_specific::git::executor::run_command;
+
 mod utilities {
 
     use git2::{Oid, Repository};
@@ -88,6 +90,22 @@ pub fn get_parent_commits(
     no_of_commits: u8,
 ) -> Result<utilities::ParentCommits, String> {
     match utilities::get_parent_commits(&repo_path, &commit_hash, &no_of_commits) {
+        Ok(output) => Ok(output),
+        Err(error) => Err(error.to_string()),
+    }
+}
+
+#[tauri::command]
+pub fn cherry_pick_commit(repo_path: String, commit_hash: String) -> Result<String, String> {
+    match run_command(&repo_path, "cherry-pick", &vec![&commit_hash]) {
+        Ok(output) => Ok(output),
+        Err(error) => Err(error.to_string()),
+    }
+}
+
+#[tauri::command]
+pub fn revert_commit(repo_path: String, commit_hash: String) -> Result<String, String> {
+    match run_command(&repo_path, "revert", &vec![&commit_hash]) {
         Ok(output) => Ok(output),
         Err(error) => Err(error.to_string()),
     }

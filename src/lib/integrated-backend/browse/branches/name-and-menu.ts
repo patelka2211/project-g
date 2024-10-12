@@ -1,10 +1,9 @@
 import { repoPath as repoPathStore } from '@/stores/repo';
 import { invoke } from '@tauri-apps/api/core';
 import { toast } from 'svelte-sonner';
-import { get } from 'svelte/store';
 
 export async function createBranch(startPoint: string | null) {
-	const repoPath = get(repoPathStore);
+	const repoPath = repoPathStore.get();
 
 	if (repoPath !== null) {
 		try {

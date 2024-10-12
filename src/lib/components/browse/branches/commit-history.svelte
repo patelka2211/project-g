@@ -5,7 +5,11 @@
 	import EllipsisIcon from '@/codicons/ellipsis-icon.svelte';
 	import RevertIcon from '@/codicons/revert-icon.svelte';
 	import { switchBranch } from '@/integrated-backend/browse/branches/actions';
-	import { getParentCommits } from '@/integrated-backend/browse/branches/commit-history';
+	import {
+		cherryPickCommit,
+		getParentCommits,
+		revertCommit
+	} from '@/integrated-backend/browse/branches/commit-history';
 	import { createBranch } from '@/integrated-backend/browse/branches/name-and-menu';
 	import type { BranchInfo, ParentCommits } from '@/integrated-backend/browse/branches/types';
 	import * as DropdownMenu from '@/shadcn-svelte-components/ui/dropdown-menu';
@@ -69,24 +73,11 @@
 						</DropdownMenu.Item>
 
 						{#if branch.isHead}
-							<!-- cherry-pick -->
-							<DropdownMenu.Item
-								class="cursor-pointer"
-								on:click={() => {
-									console.log('cherry-pick ', commit.hash);
-								}}
-							>
-								<div class="flex items-center">
-									<CherryPickIcon class="aspect-square h-[16px]" />
-									<span class="ml-[4px]">Cherry-pick this commit</span>
-								</div>
-							</DropdownMenu.Item>
-
 							<!-- revert -->
 							<DropdownMenu.Item
 								class="cursor-pointer"
-								on:click={() => {
-									console.log('revert ', commit.hash);
+								on:click={async () => {
+									await revertCommit(commit.hash);
 								}}
 							>
 								<div class="flex items-center">
@@ -95,7 +86,21 @@
 								</div>
 							</DropdownMenu.Item>
 						{:else}
+							<!-- cherry-pick -->
+							<DropdownMenu.Item
+								class="cursor-pointer"
+								on:click={async () => {
+									await cherryPickCommit(commit.hash);
+								}}
+							>
+								<div class="flex items-center">
+									<CherryPickIcon class="aspect-square h-[16px]" />
+									<span class="ml-[4px]">Cherry-pick this commit</span>
+								</div>
+							</DropdownMenu.Item>
+
 							<DropdownMenu.Separator></DropdownMenu.Separator>
+
 							<DropdownMenu.Item
 								class="cursor-pointer"
 								on:click={() => {
