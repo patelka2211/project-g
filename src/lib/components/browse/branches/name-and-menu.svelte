@@ -5,6 +5,7 @@
 	import { createBranch } from '@/integrated-backend/browse/branches/name-and-menu';
 	import type { BranchInfo } from '@/integrated-backend/browse/branches/types';
 	import * as DropdownMenu from '@/shadcn-svelte-components/ui/dropdown-menu';
+	import { currentBranch } from '@/stores/branches';
 
 	export let branch: BranchInfo;
 
@@ -33,6 +34,7 @@
 			<EllipsisIcon class="aspect-square h-3/4 m-auto" />
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content>
+			<!-- new branch -->
 			<DropdownMenu.Item
 				class="h-[28px] flex items-center cursor-pointer"
 				on:click={async () => {
@@ -42,6 +44,36 @@
 				<AddIcon class="h-3/4 aspect-square mr-[6px]" />
 				<span>Create new branch</span>
 			</DropdownMenu.Item>
+
+			{#if branch.isHead === false && $currentBranch !== undefined}
+				<!-- merge -->
+				<DropdownMenu.Item
+					class="h-[28px] flex items-center cursor-pointer"
+					on:click={async () => {
+						console.log(`merge ${branch.name} into ${$currentBranch.name}`);
+					}}
+				>
+					<AddIcon class="h-3/4 aspect-square mr-[6px]" />
+					<span>
+						Merge <strong>{branch.name}</strong> into <strong>{$currentBranch.name}</strong>
+					</span>
+				</DropdownMenu.Item>
+
+				{#if branch.upstream === null}
+					<!-- rebase -->
+					<DropdownMenu.Item
+						class="h-[28px] flex items-center cursor-pointer"
+						on:click={async () => {
+							console.log(`rebase ${$currentBranch.name} on ${branch.name}`);
+						}}
+					>
+						<AddIcon class="h-3/4 aspect-square mr-[6px]" />
+						<span>
+							Rebase <strong>{$currentBranch.name}</strong> on <strong>{branch.name}</strong>
+						</span>
+					</DropdownMenu.Item>
+				{/if}
+			{/if}
 		</DropdownMenu.Content>
 	</DropdownMenu.Root>
 </div>

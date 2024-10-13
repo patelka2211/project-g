@@ -68,7 +68,7 @@
 						>
 							<div class="flex items-center">
 								<AddIcon class="aspect-square h-[16px]" />
-								<span class="ml-[4px]">New branch</span>
+								<span class="ml-[4px]">Create new branch</span>
 							</div>
 						</DropdownMenu.Item>
 

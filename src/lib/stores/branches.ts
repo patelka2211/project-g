@@ -1,6 +1,6 @@
 import { getLocalBranches } from '@/integrated-backend/browse/branches';
 import type { BranchInfo } from '@/integrated-backend/browse/branches/types';
-import { writable } from 'svelte/store';
+import { derived, writable } from 'svelte/store';
 
 export const branches = (() => {
 	const store = writable<Array<BranchInfo>>([]);
@@ -23,3 +23,8 @@ export const branches = (() => {
 		reload
 	};
 })();
+
+export const currentBranch = derived(branches, (value) => {
+	const filtered = value.filter((value) => value.isHead === true);
+	return filtered[0] as BranchInfo | undefined;
+});
