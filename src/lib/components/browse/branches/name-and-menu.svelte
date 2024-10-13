@@ -2,7 +2,11 @@
 	import AddIcon from '@/codicons/add-icon.svelte';
 	import EllipsisIcon from '@/codicons/ellipsis-icon.svelte';
 	import { Modal } from '@/components/modal';
-	import { createBranch } from '@/integrated-backend/browse/branches/name-and-menu';
+	import {
+		createBranch,
+		mergeBranch,
+		rebaseBranch
+	} from '@/integrated-backend/browse/branches/name-and-menu';
 	import type { BranchInfo } from '@/integrated-backend/browse/branches/types';
 	import * as DropdownMenu from '@/shadcn-svelte-components/ui/dropdown-menu';
 	import { currentBranch } from '@/stores/branches';
@@ -50,7 +54,7 @@
 				<DropdownMenu.Item
 					class="h-[28px] flex items-center cursor-pointer"
 					on:click={async () => {
-						console.log(`merge ${branch.name} into ${$currentBranch.name}`);
+						await mergeBranch(branch.name);
 					}}
 				>
 					<AddIcon class="h-3/4 aspect-square mr-[6px]" />
@@ -64,7 +68,7 @@
 					<DropdownMenu.Item
 						class="h-[28px] flex items-center cursor-pointer"
 						on:click={async () => {
-							console.log(`rebase ${$currentBranch.name} on ${branch.name}`);
+							await rebaseBranch(branch.name);
 						}}
 					>
 						<AddIcon class="h-3/4 aspect-square mr-[6px]" />

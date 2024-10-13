@@ -1,3 +1,5 @@
+use crate::_backend_specific::git::executor::run_command;
+
 mod utilities {
 
     use chrono::{Datelike, Timelike, Utc};
@@ -42,4 +44,20 @@ pub fn create_branch(repo_path: String, start_point: Option<String>) -> Result<S
     };
 
     Ok(new_branch)
+}
+
+#[tauri::command]
+pub fn merge_branch(repo_path: String, branch_name: String) -> Result<String, String> {
+    match run_command(&repo_path, "merge", &vec![&branch_name]) {
+        Ok(output) => Ok(output),
+        Err(error) => Err(error.to_string()),
+    }
+}
+
+#[tauri::command]
+pub fn rebase_branch(repo_path: String, branch_name: String) -> Result<String, String> {
+    match run_command(&repo_path, "rebase", &vec![&branch_name]) {
+        Ok(output) => Ok(output),
+        Err(error) => Err(error.to_string()),
+    }
 }
