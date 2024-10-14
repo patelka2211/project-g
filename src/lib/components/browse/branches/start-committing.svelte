@@ -1,13 +1,17 @@
 <script lang="ts">
 	import type { BranchInfo } from '@/integrated-backend/browse/branches/types';
 
-	export let branch: BranchInfo;
+	interface Props {
+		branch: BranchInfo;
+	}
+
+	let { branch }: Props = $props();
 </script>
 
 <div class="w-full p-[6px]">
 	<button
 		class="w-full border rounded-[6px] hover:bg-accent hover:text-accent-foreground text-md"
-		on:click={() => {
+		onclick={() => {
 			console.log(branch.name);
 		}}
 	>
