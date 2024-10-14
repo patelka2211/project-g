@@ -1,8 +1,14 @@
 <script lang="ts">
 	import { Window } from '@tauri-apps/api/window';
-	import { onDestroy, onMount } from 'svelte';
+	import { onDestroy, onMount, type Snippet } from 'svelte';
 
-	let isFullscreen = false;
+	interface Props {
+		children?: Snippet;
+	}
+
+	let { children }: Props = $props();
+
+	let isFullscreen = $state(false);
 	let appWindow = new Window('main');
 	let unlisten: Awaited<ReturnType<typeof appWindow.onResized>>;
 
@@ -30,5 +36,5 @@
 {/if}
 
 <div class={`w-dvw ${isFullscreen ? 'h-dvh' : 'h-[calc(100dvh-28px)]'}`}>
-	<slot></slot>
+	{@render children?.()}
 </div>
