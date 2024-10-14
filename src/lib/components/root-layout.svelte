@@ -1,3 +1,13 @@
+<script lang="ts">
+	import type { Snippet } from 'svelte';
+
+	interface Props {
+		children?: Snippet;
+	}
+
+	let { children }: Props = $props();
+</script>
+
 <div class="w-dvw h-dvh">
-	<slot></slot>
+	{@render children?.()}
 </div>
