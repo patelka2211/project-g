@@ -1,4 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" {...$$props}>
+<script lang="ts">
+	interface Props {
+		[key: string]: any;
+	}
+
+	let { ...props }: Props = $props();
+</script>
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" {...props}>
 	<g fill="currentColor">
 		<rect width="1" height="1" x="8" y="4" rx=".5" />
 		<rect width="1" height="1" x="8" y="6" rx=".5" />
