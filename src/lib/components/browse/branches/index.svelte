@@ -8,7 +8,7 @@
 	import Branch from './branch.svelte';
 
 	let branchesContainerElement: HTMLDivElement;
-	let currentBranchElement: HTMLDivElement | null = null;
+	let currentBranchElement: HTMLDivElement | null = $state(null);
 	let unwatch: UnwatchFn | undefined = undefined;
 
 	function handleScroll() {
