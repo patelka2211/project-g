@@ -23,11 +23,15 @@
 	import { onMount } from 'svelte';
 	import RelativeTime from 'svelte-relative-time';
 
-	export let branch: BranchInfo;
+	interface Props {
+		branch: BranchInfo;
+	}
 
-	let commitHistory: ParentCommits['list'] = [];
+	let { branch }: Props = $props();
 
-	let endOfCommits: ParentCommits['endOfCommits'] = false;
+	let commitHistory = $state<ParentCommits['list']>([]);
+
+	let endOfCommits = $state<ParentCommits['endOfCommits']>(false);
 
 	async function loadParentCommits() {
 		if ($repoPath !== null) {
@@ -146,7 +150,7 @@
 		<div class="w-full p-[6px]">
 			<button
 				class="w-full border rounded-[6px] hover:bg-accent hover:text-accent-foreground text-md"
-				on:click={loadParentCommits}
+				onclick={loadParentCommits}
 			>
 				load more commits
 			</button>

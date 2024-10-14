@@ -9,7 +9,11 @@
 		AlertDialogTrigger
 	} from '@/shadcn-svelte-components/ui/alert-dialog';
 
-	export let branch: BranchInfo;
+	interface Props {
+		branch: BranchInfo;
+	}
+
+	let { branch }: Props = $props();
 </script>
 
 <div class="w-full p-[6px]">

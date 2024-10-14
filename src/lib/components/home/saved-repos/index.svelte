@@ -8,7 +8,7 @@
 	import { toast } from 'svelte-sonner';
 	import OpenRepoBtn from './open-repo-btn.svelte';
 
-	let savedRepos: Array<RepoInfo> = [];
+	let savedRepos = $state<Array<RepoInfo>>([]);
 
 	async function browseRepo(index: number) {
 		try {
@@ -58,11 +58,16 @@
 		class="repo-list flex flex-col items-center border w-[329px] max-h-[208px] mb-2 overflow-y-auto rounded-[12px]"
 	>
 		{#each savedRepos as repo, index (repo.id)}
-			<button
+			<div
 				class="repo flex p-2 items-center justify-between w-full h-12 hover:bg-accent hover:cursor-pointer border-b text-left"
-				on:click={async () => {
+				onclick={async () => {
 					await browseRepo(index);
 				}}
+				onkeypress={async () => {
+					await browseRepo(index);
+				}}
+				tabindex="0"
+				role="button"
 			>
 				<div class="flex flex-col justify-between">
 					<div class="truncate max-w-[273px] text-[1.053rem]" title={repo.name}>
@@ -75,15 +80,24 @@
 						{repo.dir}
 					</div>
 				</div>
-				<button
+				<div
 					class="w-[2rem] h-[2rem] border bg-secondary text-secondary-foreground rounded-[4px] hover:bg-destructive hover:text-destructive-foreground"
-					on:click|stopPropagation|preventDefault={async () => {
+					onclick={async (event) => {
+						event.stopPropagation();
+						event.preventDefault();
 						await removeRepo_UIUtility(index);
 					}}
+					onkeypress={async (event) => {
+						event.stopPropagation();
+						event.preventDefault();
+						await removeRepo_UIUtility(index);
+					}}
+					role="button"
+					tabindex="0"
 				>
 					<CloseIcon />
-				</button>
-			</button>
+				</div>
+			</div>
 		{/each}
 	</div>
 	<div class="mb-2">or</div>

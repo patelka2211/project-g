@@ -11,7 +11,7 @@
 	<div class="flex flex-col items-center gap-2">
 		<button
 			class="aspect-square border w-[36px] rounded-[6px] hover:bg-accent hover:text-accent-foreground"
-			on:click={async () => {
+			onclick={async () => {
 				await goto('/home');
 			}}
 		>
@@ -23,7 +23,7 @@
 		<button
 			class="aspect-square border w-[36px] rounded-[6px] hover:bg-accent hover:text-accent-foreground"
 			title="Prune repository"
-			on:click={async () => {
+			onclick={async () => {
 				await pruneRepository();
 			}}
 		>

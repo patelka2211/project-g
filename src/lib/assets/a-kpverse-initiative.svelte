@@ -1,4 +1,12 @@
-<svg viewBox="0 0 2433 100" fill="none" xmlns="http://www.w3.org/2000/svg" {...$$props}>
+<script lang="ts">
+	interface Props {
+		[key: string]: any;
+	}
+
+	let { ...props }: Props = $props();
+</script>
+
+<svg viewBox="0 0 2433 100" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
 	<!-- A -->
 	<path
 		d="M136.434 100H110.271L98.2558 78.1008H34.8837L23.2558 100H0L56.5891 0H79.0698L136.434 100ZM88.5659 60.0775L67.0543 19.3798L44.7674 60.0775H88.5659Z"

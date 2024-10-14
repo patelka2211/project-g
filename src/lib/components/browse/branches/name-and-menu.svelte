@@ -23,7 +23,11 @@
 	} from '@/shadcn-svelte-components/ui/dropdown-menu';
 	import { currentBranch } from '@/stores/branches';
 
-	export let branch: BranchInfo;
+	interface Props {
+		branch: BranchInfo;
+	}
+
+	let { branch }: Props = $props();
 </script>
 
 <div class="w-full h-[28px] flex items-center justify-between">

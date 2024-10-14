@@ -4,10 +4,16 @@
 	import Sonner from '@/shadcn-svelte-components/ui/sonner/sonner.svelte';
 	import { type as getOS } from '@tauri-apps/plugin-os';
 	import { ModeWatcher } from 'mode-watcher';
-	import { onMount } from 'svelte';
+	import { onMount, type Snippet } from 'svelte';
 	import '../app.css';
 
-	let isMacOS = false;
+	interface Props {
+		children?: Snippet;
+	}
+
+	let { children }: Props = $props();
+
+	let isMacOS = $state(false);
 
 	onMount(() => {
 		isMacOS = getOS() === 'macos';
@@ -20,10 +26,10 @@
 
 {#if isMacOS}
 	<RootLayoutMacOS>
-		<slot></slot>
+		{@render children?.()}
 	</RootLayoutMacOS>
 {:else}
 	<RootLayout>
-		<slot></slot>
+		{@render children?.()}
 	</RootLayout>
 {/if}
