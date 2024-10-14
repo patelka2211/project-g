@@ -11,9 +11,13 @@
 	import * as DropdownMenu from '@/shadcn-svelte-components/ui/dropdown-menu';
 	import { currentBranch } from '@/stores/branches';
 
-	export let branch: BranchInfo;
+	interface Props {
+		branch: BranchInfo;
+	}
 
-	let showBranchModal = false;
+	let { branch }: Props = $props();
+
+	let showBranchModal = $state(false);
 </script>
 
 <Modal bind:showModal={showBranchModal}>
@@ -23,11 +27,12 @@
 </Modal>
 
 <div class="w-full h-[28px] flex items-center justify-between">
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div
 		class="w-[calc(100%-28px-6px)] h-full rounded-[6px] px-[6px] hover:bg-accent hover:cursor-pointer"
-		on:click={() => (showBranchModal = true)}
+		onclick={() => (showBranchModal = true)}
+		onkeypress={() => (showBranchModal = true)}
+		tabindex="0"
+		role="button"
 	>
 		{branch.name}
 	</div>

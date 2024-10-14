@@ -7,7 +7,11 @@
 	import { open } from '@tauri-apps/plugin-dialog';
 	import { toast } from 'svelte-sonner';
 
-	export let buttonLabel: string;
+	interface Props {
+		buttonLabel: string;
+	}
+
+	let { buttonLabel }: Props = $props();
 
 	async function folderSelector() {
 		let selectedFolder = await open({

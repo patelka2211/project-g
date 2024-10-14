@@ -3,7 +3,7 @@
 	import { isGitAvailable } from '@/integrated-backend/init';
 	import { onMount } from 'svelte';
 
-	let errorMsg: string | undefined;
+	let errorMsg = $state<string>();
 
 	onMount(async () => {
 		try {

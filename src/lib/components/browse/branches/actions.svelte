@@ -16,7 +16,11 @@
 	import { repoPath } from '@/stores/repo';
 	import { toast } from 'svelte-sonner';
 
-	export let branch: BranchInfo;
+	interface Props {
+		branch: BranchInfo;
+	}
+
+	let { branch }: Props = $props();
 
 	async function switchOnClick() {
 		if (branch.isHead === true) return;
@@ -92,7 +96,7 @@
 	<button
 		class={`action-button ${branch.isHead ? 'bg-accent-foreground text-accent' : 'action_common'}`}
 		title={`${branch.isHead ? 'Already on' : 'Switch to'} ${branch.name}`}
-		on:click={switchOnClick}
+		onclick={switchOnClick}
 	>
 		<TargetIcon class="aspect-square h-full" />
 	</button>
@@ -101,7 +105,7 @@
 	<button
 		class={`action-button action_common${branch.upstream === null ? ' action_disabled' : ''}`}
 		title={branch.upstream !== null ? `Fetch from ${branch.upstream}` : undefined}
-		on:click={fetchOnClick}
+		onclick={fetchOnClick}
 	>
 		<FetchIcon class="aspect-square h-full" />
 		<span>Fetch</span>
@@ -111,7 +115,7 @@
 	<button
 		class={`action-button action_common${branch.upstream === null ? ' action_disabled' : ''}`}
 		title={branch.upstream !== null ? `Pull from ${branch.upstream}` : undefined}
-		on:click={pullOnClick}
+		onclick={pullOnClick}
 	>
 		<PullIcon class="aspect-square h-full" />
 		<span>Pull</span>
@@ -123,7 +127,7 @@
 		title={branch.upstream !== null
 			? `Push to ${branch.upstream}`
 			: `Publish as origin/${branch.name}`}
-		on:click={pushOnClick}
+		onclick={pushOnClick}
 	>
 		{#if branch.upstream !== null}
 			<PushIcon class="aspect-square h-full" />
@@ -137,7 +141,7 @@
 	<!-- delete -->
 	<button
 		class={`action-button action_delete${branch.isHead === true ? ' action_disabled' : ''}`}
-		on:click={deleteOnClick}
+		onclick={deleteOnClick}
 	>
 		<TrashIcon class="aspect-square h-full" />
 		<span>Delete</span>
