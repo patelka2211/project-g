@@ -13,6 +13,15 @@
 		switchBranch
 	} from '@/integrated-backend/browse/branches/actions';
 	import type { BranchInfo, BranchType } from '@/integrated-backend/browse/branches/types';
+	import {
+		AlertDialog,
+		AlertDialogCancel,
+		AlertDialogContent,
+		AlertDialogDescription,
+		AlertDialogPortal,
+		AlertDialogTitle
+	} from '@/shadcn-svelte-components/ui/alert-dialog';
+	import { Button } from '@/shadcn-svelte-components/ui/button';
 	import { repoPath } from '@/stores/repo';
 	import { toast } from 'svelte-sonner';
 
@@ -74,14 +83,18 @@
 		}
 	}
 
-	async function deleteOnClick() {
+	let deleteBranchError: string | null = null;
+
+	async function deleteOnClick(force: boolean) {
 		if (branch.isHead) return;
 
 		if ($repoPath) {
 			try {
-				await deleteBranch($repoPath, branch.name, branch.upstream, false);
+				await deleteBranch($repoPath, branch.name, branch.upstream, force);
 			} catch (error) {
-				if (typeof error === 'string') toast.error(error);
+				if (force !== true) {
+					deleteBranchError = typeof error === 'string' ? error : (error as Error).toString();
+				}
 			}
 		}
 	}
@@ -135,9 +148,46 @@
 	</button>
 
 	<!-- delete -->
+	<!-- delete alert dialog -->
+	<AlertDialog
+		open={deleteBranchError !== null}
+		closeOnOutsideClick
+		onOpenChange={(value) => {
+			if (value === false) {
+				deleteBranchError = null;
+			}
+		}}
+	>
+		<AlertDialogPortal>
+			<AlertDialogContent>
+				<AlertDialogTitle>Can not delete "{branch.name}"</AlertDialogTitle>
+				<AlertDialogDescription>
+					{deleteBranchError}
+				</AlertDialogDescription>
+
+				<div class="flex flex-col items-end">
+					<div class="flex gap-2">
+						<Button
+							on:click={async () => {
+								await deleteOnClick(true);
+								deleteBranchError = null;
+							}}
+						>
+							Force delete
+						</Button>
+						<AlertDialogCancel>Cancel</AlertDialogCancel>
+					</div>
+				</div>
+			</AlertDialogContent>
+		</AlertDialogPortal>
+	</AlertDialog>
+
+	<!-- delete branch button -->
 	<button
 		class={`action-button action_delete${branch.isHead === true ? ' action_disabled' : ''}`}
-		on:click={deleteOnClick}
+		on:click={async () => {
+			await deleteOnClick(false);
+		}}
 	>
 		<TrashIcon class="aspect-square h-full" />
 		<span>Delete</span>

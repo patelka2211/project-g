@@ -12,7 +12,13 @@
 	} from '@/integrated-backend/browse/branches/commit-history';
 	import { createBranch } from '@/integrated-backend/browse/branches/name-and-menu';
 	import type { BranchInfo, ParentCommits } from '@/integrated-backend/browse/branches/types';
-	import * as DropdownMenu from '@/shadcn-svelte-components/ui/dropdown-menu';
+	import {
+		DropdownMenu,
+		DropdownMenuContent,
+		DropdownMenuItem,
+		DropdownMenuSeparator,
+		DropdownMenuTrigger
+	} from '@/shadcn-svelte-components/ui/dropdown-menu';
 	import { repoPath } from '@/stores/repo';
 	import { onMount } from 'svelte';
 	import RelativeTime from 'svelte-relative-time';
@@ -53,15 +59,15 @@
 		>
 			<div class="flex items-start justify-between">
 				<div class="w-full truncate h-[28px] font-medium">{commit.msg}</div>
-				<DropdownMenu.Root>
-					<DropdownMenu.Trigger>
+				<DropdownMenu>
+					<DropdownMenuTrigger>
 						<div class="border rounded-sm px-[2px] hover:bg-background cursor-pointer">
 							<EllipsisIcon class="aspect-square h-[16px]" />
 						</div>
-					</DropdownMenu.Trigger>
-					<DropdownMenu.Content align="start">
+					</DropdownMenuTrigger>
+					<DropdownMenuContent align="start">
 						<!-- new branch from a commit -->
-						<DropdownMenu.Item
+						<DropdownMenuItem
 							class="cursor-pointer"
 							on:click={async () => {
 								await createBranch(commit.hash);
@@ -71,11 +77,11 @@
 								<AddIcon class="aspect-square h-[16px]" />
 								<span class="ml-[4px]">Create new branch</span>
 							</div>
-						</DropdownMenu.Item>
+						</DropdownMenuItem>
 
 						{#if branch.isHead}
 							<!-- revert -->
-							<DropdownMenu.Item
+							<DropdownMenuItem
 								class="cursor-pointer"
 								on:click={async () => {
 									await revertCommit(commit.hash);
@@ -85,10 +91,10 @@
 									<RevertIcon class="aspect-square h-[16px]" />
 									<span class="ml-[4px]">Revert this commit</span>
 								</div>
-							</DropdownMenu.Item>
+							</DropdownMenuItem>
 						{:else}
 							<!-- cherry-pick -->
-							<DropdownMenu.Item
+							<DropdownMenuItem
 								class="cursor-pointer"
 								on:click={async () => {
 									await cherryPickCommit(commit.hash);
@@ -98,11 +104,11 @@
 									<CherryPickIcon class="aspect-square h-[16px]" />
 									<span class="ml-[4px]">Cherry-pick this commit</span>
 								</div>
-							</DropdownMenu.Item>
+							</DropdownMenuItem>
 
-							<DropdownMenu.Separator></DropdownMenu.Separator>
+							<DropdownMenuSeparator></DropdownMenuSeparator>
 
-							<DropdownMenu.Item
+							<DropdownMenuItem
 								class="cursor-pointer"
 								on:click={() => {
 									switchBranch(branch.name);
@@ -114,10 +120,10 @@
 										switch to "{branch.name}"
 									</span>
 								</div>
-							</DropdownMenu.Item>
+							</DropdownMenuItem>
 						{/if}
-					</DropdownMenu.Content>
-				</DropdownMenu.Root>
+					</DropdownMenuContent>
+				</DropdownMenu>
 			</div>
 			<div class="h-[12px] text-[0.75rem] flex items-center">
 				<div title={new Date(commit.time).toUTCString()}>
