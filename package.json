@@ -14,7 +14,8 @@
 		"format": "prettier --write .",
 		"tauri": "tauri",
 		"app": "tauri dev",
-		"add-components": "npx shadcn-svelte@latest add"
+		"add-components": "npx shadcn-svelte@latest add",
+		"prepare": "husky"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",
@@ -28,6 +29,8 @@
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.45.1",
 		"globals": "^15.0.0",
+		"husky": "^9.1.6",
+		"lint-staged": "^15.2.10",
 		"postcss": "^8.4.41",
 		"prettier": "^3.1.1",
 		"prettier-plugin-svelte": "^3.1.2",
@@ -53,5 +56,9 @@
 		"svelte-sonner": "^0.3.27",
 		"tailwind-merge": "^2.5.4",
 		"tailwind-variants": "^0.2.1"
+	},
+	"lint-staged": {
+		"*.{svelte,css,html,json,ts}": "prettier --write",
+		"src-tauri/*.rs": "rustfmt"
 	}
 }
