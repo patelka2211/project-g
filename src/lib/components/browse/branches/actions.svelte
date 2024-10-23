@@ -85,14 +85,14 @@
 
 	let deleteBranchError: string | null = null;
 
-	async function deleteOnClick(force: boolean) {
+	async function deleteOnClick(forceDelete: boolean) {
 		if (branch.isHead) return;
 
 		if ($repoPath) {
 			try {
-				await deleteBranch($repoPath, branch.name, branch.upstream, force);
+				await deleteBranch($repoPath, branch.name, branch.upstream, forceDelete);
 			} catch (error) {
-				if (force !== true) {
+				if (forceDelete !== true) {
 					deleteBranchError = typeof error === 'string' ? error : (error as Error).toString();
 				}
 			}
