@@ -14,6 +14,7 @@ interface CommitInfo {
 	hash: string;
 	msg: string;
 	author: AuthorInfo;
+	time: number;
 }
 
 export interface ParentCommits {

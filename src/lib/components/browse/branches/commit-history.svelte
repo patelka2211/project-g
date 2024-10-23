@@ -15,6 +15,7 @@
 	import * as DropdownMenu from '@/shadcn-svelte-components/ui/dropdown-menu';
 	import { repoPath } from '@/stores/repo';
 	import { onMount } from 'svelte';
+	import RelativeTime from 'svelte-relative-time';
 
 	export let branch: BranchInfo;
 
@@ -119,7 +120,9 @@
 				</DropdownMenu.Root>
 			</div>
 			<div class="h-[12px] text-[0.75rem] flex items-center">
-				<div>Time</div>
+				<div title={new Date(commit.time).toUTCString()}>
+					<RelativeTime date={new Date(commit.time)} locale="en" />
+				</div>
 				<div class="mx-[4.5px]">· by</div>
 				<a class="h-full flex items-center" href={`mailto:${commit.author.email}`}>
 					<img

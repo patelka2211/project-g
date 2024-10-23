@@ -18,6 +18,7 @@ mod utilities {
         hash: String,
         msg: String,
         author: AuthorInfo,
+        time: i64,
     }
 
     #[derive(Serialize)]
@@ -56,9 +57,12 @@ mod utilities {
                     // commit's author's email
                     let email = signature.email().map(|e| e.to_string());
 
+                    let time = some_commit.time().seconds() * 1000;
+
                     list.push(CommitInfo {
                         hash,
                         msg,
+                        time,
                         author: AuthorInfo { name, email },
                     });
 
