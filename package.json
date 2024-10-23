@@ -58,7 +58,7 @@
 		"tailwind-variants": "^0.2.1"
 	},
 	"lint-staged": {
-		"*.{svelte,css,html,json,ts}": "prettier --write",
-		"src-tauri/*.rs": "rustfmt"
+		"**/*.{svelte,css,html,json,ts}": "prettier --write",
+		"src-tauri/**/*.rs": "rustfmt"
 	}
 }
