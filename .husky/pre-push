@@ -1,0 +1,9 @@
+#!/bin/bash
+
+remote_name="$1"
+while read local_ref local_sha remote_ref remote_sha; do
+    if [[ "$remote_ref" == "refs/heads/release" && "$remote_name" == "origin" ]]; then
+        echo "Pushing to the 'release' branch on remote 'origin' is restricted."
+        exit 1
+    fi
+done
