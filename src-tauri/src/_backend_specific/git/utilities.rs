@@ -18,7 +18,11 @@ pub fn compare_branches(
     let output = run_command(
         repo_path,
         "rev-list",
-        &vec!["--count", "--left-right", branch_comparison_format.as_str()],
+        Some(&vec![
+            "--count",
+            "--left-right",
+            branch_comparison_format.as_str(),
+        ]),
     )?;
 
     let output: Vec<&str> = output.split_whitespace().collect();

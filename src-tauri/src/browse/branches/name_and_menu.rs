@@ -48,7 +48,7 @@ pub fn create_branch(repo_path: String, start_point: Option<String>) -> Result<S
 
 #[tauri::command]
 pub fn merge_branch(repo_path: String, branch_name: String) -> Result<String, String> {
-    match run_command(&repo_path, "merge", &vec![&branch_name]) {
+    match run_command(&repo_path, "merge", Some(&vec![&branch_name])) {
         Ok(output) => Ok(output),
         Err(error) => Err(error.to_string()),
     }
@@ -56,7 +56,7 @@ pub fn merge_branch(repo_path: String, branch_name: String) -> Result<String, St
 
 #[tauri::command]
 pub fn rebase_branch(repo_path: String, branch_name: String) -> Result<String, String> {
-    match run_command(&repo_path, "rebase", &vec![&branch_name]) {
+    match run_command(&repo_path, "rebase", Some(&vec![&branch_name])) {
         Ok(output) => Ok(output),
         Err(error) => Err(error.to_string()),
     }

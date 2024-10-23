@@ -5,11 +5,14 @@ mod home;
 mod init;
 
 use crate::{
-    browse::branches::{
-        actions::{delete_branch, fetch_branch, pull_branch, push_branch, switch_branch},
-        commit_history::{cherry_pick_commit, get_parent_commits, revert_commit},
-        get_local_branches,
-        name_and_menu::{create_branch, merge_branch, rebase_branch},
+    browse::{
+        branches::{
+            actions::{delete_branch, fetch_branch, pull_branch, push_branch, switch_branch},
+            commit_history::{cherry_pick_commit, get_parent_commits, revert_commit},
+            get_local_branches,
+            name_and_menu::{create_branch, merge_branch, rebase_branch},
+        },
+        sidebar::prune_repository,
     },
     home::repositories::{
         checks::{assert_dot_git_folder, assert_origin_head, get_origin_fetch_url},
@@ -61,7 +64,9 @@ pub fn run() {
             // browse:branches:name_and_menu
             create_branch,
             merge_branch,
-            rebase_branch
+            rebase_branch,
+            // browse::sidebar
+            prune_repository
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

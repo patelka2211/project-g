@@ -97,7 +97,7 @@ pub fn get_parent_commits(
 
 #[tauri::command]
 pub fn cherry_pick_commit(repo_path: String, commit_hash: String) -> Result<String, String> {
-    match run_command(&repo_path, "cherry-pick", &vec![&commit_hash]) {
+    match run_command(&repo_path, "cherry-pick", Some(&vec![&commit_hash])) {
         Ok(output) => Ok(output),
         Err(error) => Err(error.to_string()),
     }
@@ -105,7 +105,7 @@ pub fn cherry_pick_commit(repo_path: String, commit_hash: String) -> Result<Stri
 
 #[tauri::command]
 pub fn revert_commit(repo_path: String, commit_hash: String) -> Result<String, String> {
-    match run_command(&repo_path, "revert", &vec![&commit_hash]) {
+    match run_command(&repo_path, "revert", Some(&vec![&commit_hash])) {
         Ok(output) => Ok(output),
         Err(error) => Err(error.to_string()),
     }

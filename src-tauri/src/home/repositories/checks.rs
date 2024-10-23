@@ -25,7 +25,7 @@ mod utilities {
             return Ok(());
         }
 
-        let stdout = match run_command(&repo_path, "remote", &vec!["show", "origin"]) {
+        let stdout = match run_command(&repo_path, "remote", Some(&vec!["show", "origin"])) {
             Ok(output) => output,
             Err(_) => return Err("Cannot find \"origin/HEAD\"".into()),
         };

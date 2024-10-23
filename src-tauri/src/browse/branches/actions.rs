@@ -8,7 +8,7 @@ mod utilities {
     ) -> Result<()> {
         let args = vec![branch_name.as_str(), delete_mode.as_str()];
 
-        run_command(&repo_path, "branch", &args)?;
+        run_command(&repo_path, "branch", Some(&args))?;
 
         Ok(())
     }
@@ -29,7 +29,7 @@ pub struct RemoteBranchInfo<'a> {
 
 #[tauri::command]
 pub fn switch_branch(repo_path: String, branch_name: String) -> Result<(), String> {
-    match run_command(&repo_path, "switch", &vec![&branch_name]) {
+    match run_command(&repo_path, "switch", Some(&vec![&branch_name])) {
         Ok(_output) => Ok(()),
         Err(error) => Err(error.to_string()),
     }
@@ -40,7 +40,7 @@ pub fn fetch_branch(repo_path: String, remote_branch: RemoteBranchInfo) -> Resul
     match run_command(
         &repo_path,
         "fetch",
-        &vec![remote_branch.remote, remote_branch.name],
+        Some(&vec![remote_branch.remote, remote_branch.name]),
     ) {
         Ok(_output) => Ok(()),
         Err(error) => Err(error.to_string()),
@@ -52,7 +52,7 @@ pub fn pull_branch(repo_path: String, remote_branch: RemoteBranchInfo) -> Result
     match run_command(
         &repo_path,
         "pull",
-        &vec![remote_branch.remote, remote_branch.name],
+        Some(&vec![remote_branch.remote, remote_branch.name]),
     ) {
         Ok(_output) => Ok(()),
         Err(error) => Err(error.to_string()),
@@ -73,7 +73,7 @@ pub fn push_branch(
     args.push(&remote_branch.remote);
     args.push(&remote_branch.name);
 
-    match run_command(&repo_path, "push", &args) {
+    match run_command(&repo_path, "push", Some(&args)) {
         Ok(_output) => Ok(()),
         Err(error) => Err(error.to_string()),
     }
