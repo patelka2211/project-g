@@ -25,7 +25,7 @@ pub fn compare_branches(
         ]),
     )?;
 
-    let output: Vec<&str> = output.split_whitespace().collect();
+    let output = output.split_whitespace().collect::<Vec<&str>>();
 
     let ahead = output[0].parse::<i32>()?;
     let behind = output[1].parse::<i32>()?;
