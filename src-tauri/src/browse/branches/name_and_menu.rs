@@ -25,7 +25,13 @@ mod utilities {
         let repo = Repository::open(&repo_path)?;
         let commit = match start_point {
             Some(start_point) => repo.find_commit(Oid::from_str(&start_point)?)?,
-            None => repo.head()?.peel_to_commit()?,
+            None => {
+                let head = match repo.head() {
+                    Ok(head) => Ok(head),
+                    Err(_) => Err("Repository HEAD Not Found"),
+                }?;
+                head.peel_to_commit()?
+            }
         };
 
         let new_branch = generate_branch_name();
