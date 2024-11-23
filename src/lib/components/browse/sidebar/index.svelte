@@ -11,8 +11,8 @@
 	<div class="flex flex-col items-center gap-2">
 		<button
 			class="aspect-square border w-[36px] rounded-[6px] hover:bg-accent hover:text-accent-foreground"
-			on:click={() => {
-				goto('/home');
+			on:click={async () => {
+				await goto('/home');
 			}}
 		>
 			<ArrowSmallLeftIcon />

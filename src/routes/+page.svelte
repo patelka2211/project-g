@@ -10,7 +10,7 @@
 			let gitExist = await isGitAvailable();
 
 			if (gitExist === true) {
-				goto('/home');
+				await goto('/home');
 			} else {
 				errorMsg = 'Git not available!';
 			}
