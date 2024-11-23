@@ -26,9 +26,6 @@ importers:
       mode-watcher:
         specifier: ^0.4.1
         version: 0.4.1(svelte@4.2.19)
-      run-script-os:
-        specifier: ^1.1.6
-        version: 1.1.6
       svelte-radix:
         specifier: ^1.1.1
         version: 1.1.1(svelte@4.2.19)
@@ -96,6 +93,9 @@ importers:
       prettier-plugin-svelte:
         specifier: ^3.1.2
         version: 3.2.7(prettier@3.3.3)(svelte@4.2.19)
+      run-script-os:
+        specifier: ^1.1.6
+        version: 1.1.6
       sass:
         specifier: ^1.81.0
         version: 1.81.0
