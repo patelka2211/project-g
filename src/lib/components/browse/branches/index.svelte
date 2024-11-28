@@ -107,7 +107,7 @@
 
 	.branch-container {
 		@apply h-full max-w-[398px];
-		@apply bg-background;
+		@apply bg-accent;
 		@apply p-[14px];
 		@apply border-x-[0.5px];
 	}

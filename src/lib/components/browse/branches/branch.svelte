@@ -9,7 +9,7 @@
 	export let branch: BranchInfo;
 </script>
 
-<div class="w-full border rounded-[12px] h-full flex flex-col items-center">
+<div class="w-full border rounded-[12px] h-full flex flex-col items-center bg-background">
 	<div class="w-full p-[6px] flex flex-col items-center gap-[6px]">
 		<NameAndMenu {branch} />
 		<Actions {branch} />
